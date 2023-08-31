@@ -8,9 +8,11 @@ next build
 
 cp -a .next/static .next/standalone/.next
 cp -a public .next/standalone
-cp server.js .next/standalone
 
 cp -a .next/standalone standalone
+rm standalone/server.js
+cp server.js standalone
+cp next.config.js standalone
 
 mkdir deployments
 mkdir standalone
@@ -29,12 +31,6 @@ rm -r node_modules
 zip -r ../deployments/source.zip * .[!.]*
 cd ..
 
-echo ""
 rm -r .next
 rm -r standalone
 rm -r nodejs
-
-
-
-
-# sed -i 's/\.next/dot_next/g' .next/*.*
