@@ -13,7 +13,7 @@ const required_server_files_json_1 = require('./.next/required-server-files.json
 const nextServer = new next_server_1.default({
   hostname: 'localhost',
   port: 3000,
-  dir: './',
+  dir: __dirname,
   dev: false,
   conf: Object.assign({}, required_server_files_json_1.config),
 })

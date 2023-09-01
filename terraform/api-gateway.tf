@@ -77,9 +77,14 @@ module "api_gateway" {
 
   integrations = {
     "ANY /_next/{proxy+}" = {
-      # integration_type = "AWS_PROXY"
       integration_type     = "HTTP_PROXY"
       integration_uri      = "https://${aws_cloudfront_distribution.static_distribution.domain_name}/{proxy}"
+      integration_method   = "GET"
+      passthrough_behavior = "WHEN_NO_MATCH"
+    }
+    "ANY /assets/{proxy+}" = {
+      integration_type     = "HTTP_PROXY"
+      integration_uri      = "https://${aws_cloudfront_distribution.public_distribution.domain_name}/{proxy}"
       integration_method   = "GET"
       passthrough_behavior = "WHEN_NO_MATCH"
     }
