@@ -10,6 +10,7 @@ npm run prepare-lambda
 terraform apply ...
 ```
 
+Based on: https://remaster.com/blog/nextjs-lambda-serverless-framework
 
 
 

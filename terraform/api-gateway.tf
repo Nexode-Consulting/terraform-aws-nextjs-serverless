@@ -76,11 +76,14 @@ module "api_gateway" {
   }
 
   integrations = {
-    "ANY /" = {
-      lambda_arn             = module.lambda.lambda_function_arn
-      payload_format_version = "2.0"
+    "ANY /_next/{proxy+}" = {
+      # integration_type = "AWS_PROXY"
+      integration_type     = "HTTP_PROXY"
+      integration_uri      = "https://${aws_cloudfront_distribution.static_distribution.domain_name}/{proxy}"
+      integration_method   = "GET"
+      passthrough_behavior = "WHEN_NO_MATCH"
     }
-    "ANY /{proxy+}" = {
+    "$default" = {
       lambda_arn             = module.lambda.lambda_function_arn
       payload_format_version = "2.0"
     }

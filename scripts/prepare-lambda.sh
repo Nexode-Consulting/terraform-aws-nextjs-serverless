@@ -32,5 +32,5 @@ zip -r ../deployments/source.zip * .[!.]*
 cd ..
 
 rm -r .next
-rm -r standalone
+# rm -r standalone
 rm -r nodejs
