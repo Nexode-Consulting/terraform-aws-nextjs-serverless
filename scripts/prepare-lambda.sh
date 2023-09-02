@@ -28,6 +28,11 @@ cp -a node_modules/serverless-http nodejs/node_modules
 zip -r deployments/layer.zip nodejs
 
 cd standalone
+mkdir -p static/_next
+mv .next/static static/_next
+mkdir public/assets
+mv public/* public/assets
+
 rm -r node_modules
 find . -name '*.html' -exec sed -i.backup 's|src="/|src="/assets/|g' '{}' \; 
 zip -r ../deployments/source.zip * .[!.]*
