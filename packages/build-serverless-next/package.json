@@ -1,0 +1,22 @@
+{
+  "name": "build-serverless-next",
+  "version": "0.0.4-alpha",
+  "description": "Bash script to serverless component for deploying to aws",
+  "bin": {
+    "build-serverless-next": "./bin/build-serverless-next.sh"
+  },
+  "license": "MIT",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://gitlab.com/nexode-consulting/serverless-next-js.git"
+  },
+  "author": "Eleftherios Myriounis",
+  "bugs": {
+    "url": "https://gitlab.com/nexode-consulting/serverless-next-js/issues"
+  },
+  "homepage": "https://gitlab.com/nexode-consulting/serverless-next-js#readme"
+}

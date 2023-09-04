@@ -12,7 +12,7 @@ cp -a public .next/standalone
 
 cp -a .next/standalone standalone
 rm standalone/server.js
-cp server.js standalone
+cp node_modules/build-serverless-next/server.js standalone
 cp next.config.js standalone
 
 mkdir deployments
@@ -35,6 +35,7 @@ mv public/* public/assets
 
 rm -r node_modules
 find . -name '*.html' -exec sed -i.backup 's|src="/|src="/assets/|g' '{}' \; 
+find . -name '*.html' -exec sed -i.backup 's|src="/assets/_next/|src="/_next/|g' '{}' \; 
 zip -r ../deployments/source.zip * .[!.]*
 cd ..
 

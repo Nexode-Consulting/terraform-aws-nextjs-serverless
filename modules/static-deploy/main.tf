@@ -6,8 +6,9 @@ module "public_assets_bucket" {
   source  = "terraform-aws-modules/s3-bucket/aws"
   version = "3.15.1"
 
-  bucket = "${local.repo}-public-assets"
-  acl    = "private"
+  bucket        = "${var.deployment_name}-public-assets"
+  acl           = "private"
+  force_destroy = true
 
   block_public_acls       = true
   block_public_policy     = true
@@ -36,7 +37,7 @@ module "public_assets_static_files" {
   source  = "hashicorp/dir/template"
   version = "1.0.2"
 
-  base_dir = "../public"
+  base_dir = "${var.base_dir}standalone/public"
 }
 
 resource "aws_s3_object" "public_assets_files" {
@@ -62,8 +63,9 @@ module "static_assets_bucket" {
   source  = "terraform-aws-modules/s3-bucket/aws"
   version = "3.15.1"
 
-  bucket = "${local.repo}-static-assets"
-  acl    = "private"
+  bucket        = "${var.deployment_name}-static-assets"
+  acl           = "private"
+  force_destroy = true
 
   block_public_acls       = true
   block_public_policy     = true
@@ -92,7 +94,7 @@ module "static_assets_static_files" {
   source  = "hashicorp/dir/template"
   version = "1.0.2"
 
-  base_dir = "../standalone/static"
+  base_dir = "${var.base_dir}standalone/static"
 }
 
 resource "aws_s3_object" "static_assets_files" {
@@ -142,7 +144,7 @@ resource "aws_cloudfront_distribution" "next_distribution" {
   }
 
   origin {
-    domain_name = module.api_gateway.default_apigatewayv2_stage_domain_name
+    domain_name = var.dynamic_origin_domain_name
     origin_id   = aws_cloudfront_origin_access_identity.dynamic_assets_oai.id
 
     custom_origin_config {
