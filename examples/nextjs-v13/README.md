@@ -6,6 +6,6 @@
 
 ```
 npm i
-npm run prepare-lambda
+npm run build-serverless-next
 terraform apply ...
 ```
