@@ -9,9 +9,9 @@ use `build-serverless-next` package to build
 module "next_serverless" {
   source = "../../../" # replace with tf registry source & version
 
-  deployment_name = var.deployment_name
-  region = var.region
-  global_region = var.global_region
-  base_dir = var.base_dir
+  deployment_name = "nextjs-serverless"
+  region = "eu-central-1"
+  global_region = "us-east-1"
+  base_dir = "./"
 }
 ```
