@@ -15,17 +15,3 @@ module "static-deploy" {
   cloudfront_acm_certificate_arn = var.acm_certificate_arn
   cloudfront_aliases = var.cloudfront_aliases
 }
-
-provider "aws" {
-  region = "{{region}}"
-  profile = "{{profile}}"
-}
-
-terraform {
-  backend "s3" {
-    bucket         = "{{bucket}}"
-    key            = "{{filename}}"
-    region         = "{{region}}"
-    profile        = "{{profile}}"
-  }
-}
