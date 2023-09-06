@@ -5,7 +5,12 @@ rm -r standalone
 rm -r deployments
 
 npm i -D serverless serverless-esbuild esbuild serverless-http
+
+cp -a ./app ./app-backup
+find ./app -type f -name 'page.tsx' -exec sh -c 'printf "\nexport const runtime = '\''edge'\'';\n" >> "$0"' {} \;
 next build
+rm -r ./app
+mv ./app-backup ./app
 
 cp -a .next/static .next/standalone/.next
 cp -a public .next/standalone
@@ -29,9 +34,9 @@ zip -r deployments/layer.zip nodejs
 
 cd standalone
 mkdir -p static/_next
-mv .next/static static/_next
+cp -a .next/static static/_next
 mkdir public/assets
-mv public/* public/assets
+cp -a public/* public/assets
 
 rm -r node_modules
 find . -name '*.html' -exec sed -i.backup 's|src="/|src="/assets/|g' '{}' \; 
