@@ -17,3 +17,15 @@ variable "base_dir" {
   type    = string
   default = "./"
 }
+
+# CloudFront works only with certs stored in us-east-1
+variable "acm_certificate_arn" {
+  type    = string
+  default = ""
+}
+
+variable "cloudfront_aliases" {
+  description = "Your custom domain"
+  type        = list(string)
+  default     = []
+}

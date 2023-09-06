@@ -9,3 +9,11 @@ variable "base_dir" {
 variable "dynamic_origin_domain_name" {
   type = string
 }
+
+variable "cloudfront_acm_certificate_arn" {
+  type = string
+}
+
+variable "cloudfront_aliases" {
+  type = list(string)
+}

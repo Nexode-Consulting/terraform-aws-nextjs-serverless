@@ -158,7 +158,7 @@ resource "aws_cloudfront_distribution" "next_distribution" {
   enabled         = true
   is_ipv6_enabled = true
 
-  # aliases             = [local.public_domain]
+  aliases             = var.cloudfront_aliases 
   default_root_object = null
 
   default_cache_behavior {
@@ -218,9 +218,9 @@ resource "aws_cloudfront_distribution" "next_distribution" {
 
   viewer_certificate {
     cloudfront_default_certificate = true
-    # acm_certificate_arn      = module.public_cloudfront_certificate.acm_certificate_arn
-    # minimum_protocol_version = "TLSv1.2_2021"
-    # ssl_support_method       = "sni-only"
+    acm_certificate_arn            = local.use_default_cert ? null : var.cloudfront_acm_certificate_arn
+    minimum_protocol_version       = local.use_default_cert ? null : "TLSv1.2_2021"
+    ssl_support_method             = local.use_default_cert ? null :"sni-only"
   }
 
   restrictions {
@@ -228,4 +228,8 @@ resource "aws_cloudfront_distribution" "next_distribution" {
       restriction_type = "none"
     }
   }
+}
+
+locals {
+  use_default_cert = var.cloudfront_acm_certificate_arn == ""
 }
