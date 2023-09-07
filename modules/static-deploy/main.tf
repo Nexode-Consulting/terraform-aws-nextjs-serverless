@@ -9,6 +9,8 @@ module "public_assets_bucket" {
   bucket        = "${var.deployment_name}-public-assets"
   acl           = "private"
   force_destroy = true
+  control_object_ownership = true
+  object_ownership         = "ObjectWriter"
 
   block_public_acls       = true
   block_public_policy     = true
@@ -66,6 +68,8 @@ module "static_assets_bucket" {
   bucket        = "${var.deployment_name}-static-assets"
   acl           = "private"
   force_destroy = true
+  control_object_ownership = true
+  object_ownership         = "ObjectWriter"
 
   block_public_acls       = true
   block_public_policy     = true
