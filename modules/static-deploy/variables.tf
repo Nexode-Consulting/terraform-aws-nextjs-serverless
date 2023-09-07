@@ -11,7 +11,8 @@ variable "dynamic_origin_domain_name" {
 }
 
 variable "cloudfront_acm_certificate_arn" {
-  type = string
+  type    = string
+  default = null
 }
 
 variable "cloudfront_aliases" {

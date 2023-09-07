@@ -6,9 +6,9 @@ module "public_assets_bucket" {
   source  = "terraform-aws-modules/s3-bucket/aws"
   version = "3.15.1"
 
-  bucket        = "${var.deployment_name}-public-assets"
-  acl           = "private"
-  force_destroy = true
+  bucket                   = "${var.deployment_name}-public-assets"
+  acl                      = "private"
+  force_destroy            = true
   control_object_ownership = true
   object_ownership         = "ObjectWriter"
 
@@ -65,9 +65,9 @@ module "static_assets_bucket" {
   source  = "terraform-aws-modules/s3-bucket/aws"
   version = "3.15.1"
 
-  bucket        = "${var.deployment_name}-static-assets"
-  acl           = "private"
-  force_destroy = true
+  bucket                   = "${var.deployment_name}-static-assets"
+  acl                      = "private"
+  force_destroy            = true
   control_object_ownership = true
   object_ownership         = "ObjectWriter"
 
@@ -162,7 +162,7 @@ resource "aws_cloudfront_distribution" "next_distribution" {
   enabled         = true
   is_ipv6_enabled = true
 
-  aliases             = var.cloudfront_aliases 
+  aliases             = var.cloudfront_aliases
   default_root_object = null
 
   default_cache_behavior {
@@ -221,10 +221,10 @@ resource "aws_cloudfront_distribution" "next_distribution" {
   price_class = "PriceClass_100"
 
   viewer_certificate {
-    cloudfront_default_certificate = true
-    acm_certificate_arn            = local.use_default_cert ? null : var.cloudfront_acm_certificate_arn
-    minimum_protocol_version       = local.use_default_cert ? null : "TLSv1.2_2021"
-    ssl_support_method             = local.use_default_cert ? null :"sni-only"
+    cloudfront_default_certificate = var.cloudfront_acm_certificate_arn == null
+    acm_certificate_arn            = var.cloudfront_acm_certificate_arn
+    minimum_protocol_version       = "TLSv1.2_2021"
+    ssl_support_method             = var.cloudfront_acm_certificate_arn != null ? "sni-only" : null
   }
 
   restrictions {
@@ -232,8 +232,4 @@ resource "aws_cloudfront_distribution" "next_distribution" {
       restriction_type = "none"
     }
   }
-}
-
-locals {
-  use_default_cert = var.cloudfront_acm_certificate_arn == ""
 }

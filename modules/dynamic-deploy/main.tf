@@ -38,9 +38,7 @@ module "next_lambda" {
     allow_methods     = ["*"]
   }
 
-  environment_variables = {
-    NODE_ENV = "prod"
-  }
+  environment_variables = var.next_lambda_env_vars
 
   allowed_triggers = {
     api_gateway = {
@@ -66,9 +64,8 @@ module "api_gateway" {
   name        = "${var.deployment_name}-api"
   description = "${var.deployment_name} API"
 
-  create_vpc_link = false
-
-  create_api_domain_name      = false
+  create_vpc_link        = false
+  create_api_domain_name = false
 
   default_stage_access_log_destination_arn = module.api_gateway_cloudwatch_log_group.cloudwatch_log_group_arn
   default_stage_access_log_format          = "sourceIp: $context.identity.sourceIp, $context.domainName $context.requestTime \"$context.httpMethod $context.path $context.routeKey $context.protocol\" path: $context.customDomain.basePathMatched resp_status: $context.status integrationLatency: $context.integrationLatency responseLatency: $context.responseLatency requestId: $context.requestId Error: $context.integrationErrorMessage rawRequestPayloadSize: $input.body.size() rawRequestPayload: $input.body" # https://docs.aws.amazon.com/apigateway/latest/developerguide/http-api-logging-variables.html

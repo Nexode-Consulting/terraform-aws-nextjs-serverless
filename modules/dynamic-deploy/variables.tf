@@ -24,3 +24,7 @@ variable "region" {
 variable "base_dir" {
   type = string
 }
+
+variable "next_lambda_env_vars" {
+  type = map(string)
+}
