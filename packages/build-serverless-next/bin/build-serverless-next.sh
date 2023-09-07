@@ -8,7 +8,9 @@ npm i -D serverless serverless-esbuild esbuild serverless-http
 
 cp -a ./app ./app-backup
 find ./app -type f -name 'page.tsx' -exec sh -c 'printf "\nexport const runtime = '\''edge'\'';\n" >> "$0"' {} \;
+set -e
 next build
+set +e
 rm -r ./app
 mv ./app-backup ./app
 
