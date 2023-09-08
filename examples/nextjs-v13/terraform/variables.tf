@@ -1,6 +1,6 @@
 variable "deployment_name" {
   type    = string
-  default = "nextjs-serverless"
+  default = "example-nextjs-serverless"
 }
 
 variable "region" {

@@ -1,9 +1,33 @@
-resource "aws_lambda_layer_version" "server_layer" {
-  filename   = "${var.base_dir}deployments/layer.zip"
-  layer_name = "${var.deployment_name}-layer"
+module "next_lambda_layers_bucket" {
+  source  = "terraform-aws-modules/s3-bucket/aws"
+  version = "3.15.1"
 
-  source_code_hash    = filebase64sha256("${var.base_dir}deployments/layer.zip")
+  bucket                   = "${var.deployment_name}-next-lambda-layers"
+  acl                      = "private"
+  force_destroy            = true
+  control_object_ownership = true
+  object_ownership         = "ObjectWriter"
+
+  block_public_acls       = true
+  block_public_policy     = true
+  ignore_public_acls      = true
+  restrict_public_buckets = true
+}
+
+resource "aws_s3_object" "lambda_layer_object" {
+  bucket = module.next_lambda_layers_bucket.s3_bucket_id
+  key    = "layer.zip"
+  source = "${var.base_dir}deployments/layer.zip"
+}
+
+resource "aws_lambda_layer_version" "server_layer" {
+  depends_on = [aws_s3_object.lambda_layer_object]
+
+  layer_name          = "${var.deployment_name}-layer"
   compatible_runtimes = [var.runtime]
+
+  s3_bucket = module.next_lambda_layers_bucket.s3_bucket_id
+  s3_key    = "layer.zip"
 }
 
 module "next_lambda" {
