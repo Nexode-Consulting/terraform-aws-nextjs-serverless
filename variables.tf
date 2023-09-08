@@ -29,13 +29,21 @@ variable "cloudfront_acm_certificate_arn" {
   default     = null
 }
 
+# If you need a wildcard domain(ex: *.example.com), you can add it like this:
+# aliases = [var.custom_domain, "*.${var.custom_domain}"]
 variable "cloudfront_aliases" {
   description = "A list of custom domain for the cloudfront distribution, e.g. www.my-nextjs-app.com"
   type        = list(string)
   default     = []
 }
 
+# Example:
+# next_lambda_env_vars = {
+#   BACKEND_VIRTUAL_DOMAIN    = "backend.example.com"
+#   NEXT_PUBLIC_RECAPTCHA_KEY = "recaptcha-key" 
+# }
 variable "next_lambda_env_vars" {
+  description = "A map of environment variables that you want to pass to the lambda"
   type    = map(string)
   default = {}
 }
