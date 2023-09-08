@@ -1,6 +1,6 @@
 {
   "name": "build-serverless-next",
-  "version": "0.0.6-alpha",
+  "version": "0.0.7-alpha",
   "description": "Bash script to serverless component for deploying to aws",
   "bin": {
     "build-serverless-next": "./bin/build-serverless-next.sh"
