@@ -1,41 +1,27 @@
 # terraform-aws-nextjs-serverless
 
 
-
 ## Setup
 
-### Prepare Build 
+### Prepare 
 
 Add the following dependencies to your package.json.
 
 ```json
 package.json
 
-    "scripts": {
-        "dev": "next dev",
-        "test": "jest",
-        "build": "next build",
-        "export": "next export",
-        "build-serverless-next": "build-serverless-next",
-        "start": "next start",
-        "lint": "next lint"
-    },
-  "dependencies": {
-    ...
-    "build-serverless-next": "^0.0.7-alpha",
-    "next": "^13.4.19",
+{
+  "scripts": {
+    "build-serverless-next": "build-serverless-next",
     ...
   },
-  "devDependencies": {
+  "dependencies": {
+    "build-serverless-next": "latest",
+    "next": "^13",
     ...
-    "serverless": "^3.34.0",
-    "serverless-esbuild": "^1.46.0",
-    "serverless-http": "^3.2.0",
-    ...
-  }
-
-
-
+  },
+  ...
+}
 ```
 ### Create Terraform deployment
 
@@ -43,6 +29,8 @@ Ensure that the deployment name is unique since its used for creating s3 buckets
 
 
 ```
+main.tf
+
 module "next_serverless" {
   source  = "Nexode-Consulting/nextjs-serverless/aws"
 
@@ -53,9 +41,21 @@ module "next_serverless" {
 }
 ```
 
-## Deployment
+### Deployment
 Build the Next.js Code and deploy
 ```bash
+npm i
 num run build-serverless-next
 terraform apply
-`
+```
+
+### Tests
+This module is tested with terratest, which is essentially a Go test library with cloud and Terraform SDK integrations
+
+To run the tests manually:
+```bash
+cd test/
+go mod init <my_module>
+go mod tidy
+go test -v -timeout 30m //This makes sure that the entire infrastructure can be deployed, tested and destroyed, since Go packages run out at 10 minute mark. If you still timeout or your CI/CD tool causes problems, this is the first place to look.
+```

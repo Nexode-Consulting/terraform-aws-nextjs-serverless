@@ -3,5 +3,5 @@ output "next_serverless" {
 }
 
 output "cloudfront_url" {
-  value = module.static-deploy.next_distribution.domain_name
+  value = module.next_serverless.static-deploy.next_distribution.domain_name
 }
