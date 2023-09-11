@@ -22,7 +22,3 @@ terraform {
     encrypt = true
   }
 }
-
-# data "aws_route53_zone" "base_domain" {
-#   name = var.base_domain
-# }
