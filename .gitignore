@@ -37,10 +37,16 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
+#terraform
 **/.terraform/*
 **/tf-plan
+.terraform.lock.hcl
+.terraform
+examples/nextjs-v13/terraform/.terraform*
 
 **/.DS_Store
 
 **/deployments/
 **/standalone/
+
+.idea/

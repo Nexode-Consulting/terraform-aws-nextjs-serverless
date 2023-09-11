@@ -10,12 +10,6 @@ variable "region" {
   default     = "eu-central-1"
 }
 
-variable "global_region" {
-  description = "The aws global region, must be us-east-1"
-  type        = string
-  default     = "us-east-1"
-}
-
 variable "base_dir" {
   description = "The base directory of the next.js app"
   type        = string
