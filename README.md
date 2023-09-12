@@ -48,3 +48,14 @@ npm i
 num run build-serverless-next
 terraform apply
 ```
+
+### Tests
+This module is tested with terratest, which is essentially a Go test library with cloud and Terraform SDK integrations
+
+To run the tests manually:
+```bash
+cd test/
+go mod init <my_module>
+go mod tidy
+go test -v -timeout 30m //This makes sure that the entire infrastructure can be deployed, tested and destroyed, since Go packages run out at 10 minute mark. If you still timeout or your CI/CD tool causes problems, this is the first place to look.
+```
