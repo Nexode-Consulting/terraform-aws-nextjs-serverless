@@ -37,7 +37,13 @@ variable "cloudfront_aliases" {
 #   NEXT_PUBLIC_RECAPTCHA_KEY = "recaptcha-key" 
 # }
 variable "next_lambda_env_vars" {
-  description = "A map of environment variables that you want to pass to the lambda"
-  type    = map(string)
-  default = {}
+  description = "Map of environment variables that you want to pass to the lambda"
+  type        = map(string)
+  default     = {}
+}
+
+variable "next_lambda_policy_statements" {
+  description = "Map of dynamic policy statements to attach to Lambda Function role"
+  type        = map(string)
+  default     = {}
 }
