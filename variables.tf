@@ -38,12 +38,12 @@ variable "cloudfront_aliases" {
 # }
 variable "next_lambda_env_vars" {
   description = "Map of environment variables that you want to pass to the lambda"
-  type        = map(string)
+  type        = map(any)
   default     = {}
 }
 
 variable "next_lambda_policy_statements" {
   description = "Map of dynamic policy statements to attach to Lambda Function role"
-  type        = map(string)
+  type        = map(any)
   default     = {}
 }

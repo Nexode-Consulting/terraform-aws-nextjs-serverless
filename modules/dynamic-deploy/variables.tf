@@ -26,9 +26,9 @@ variable "base_dir" {
 }
 
 variable "next_lambda_env_vars" {
-  type = map(string)
+  type = map(any)
 }
 
 variable "next_lambda_policy_statements" {
-  type = map(string)
+  type = map(any)
 }
