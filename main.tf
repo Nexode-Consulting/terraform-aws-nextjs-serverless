@@ -1,10 +1,11 @@
 module "dynamic-deploy" {
   source = "./modules/dynamic-deploy"
 
-  deployment_name      = var.deployment_name
-  region               = var.region
-  base_dir             = var.base_dir
-  next_lambda_env_vars = var.next_lambda_env_vars
+  deployment_name               = var.deployment_name
+  region                        = var.region
+  base_dir                      = var.base_dir
+  next_lambda_env_vars          = var.next_lambda_env_vars
+  next_lambda_policy_statements = var.next_lambda_policy_statements
 }
 
 module "static-deploy" {

@@ -71,6 +71,9 @@ module "next_lambda" {
       source_arn = "${module.api_gateway.apigatewayv2_api_execution_arn}/*/*"
     }
   }
+
+  attach_policy_statements = length(keys(var.next_lambda_policy_statements)) != 0
+  policy_statements        = var.next_lambda_policy_statements
 }
 
 module "api_gateway_cloudwatch_log_group" {
