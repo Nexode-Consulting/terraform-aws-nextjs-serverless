@@ -1,28 +1,26 @@
 package test
 
 import (
+	"crypto/tls"
 	"fmt"
+	"strings"
 	"testing"
 
-	"github.com/gruntwork-io/terratest/modules/aws"
+	http_helper "github.com/gruntwork-io/terratest/modules/http-helper"
 	"github.com/gruntwork-io/terratest/modules/terraform"
 	"github.com/stretchr/testify/assert"
 	"github.com/tidwall/gjson"
 )
 
-// An example of how to test the Terraform module using Terratest.
-func TestTerraformAwsS3Example(t *testing.T) {
+func TestTerraformCloudFrontServerlessNextJS(t *testing.T) {
 	t.Parallel()
 
-	awsRegion := "eu-central-1"
-
-	// Construct the terraform options with default retryable errors to handle the most common retryable errors in
-	// terraform testing.
 	terraformOptions := terraform.WithDefaultRetryableErrors(t, &terraform.Options{
 		// The path to where our Terraform code is located
-		TerraformDir: "../",
+		TerraformDir: "../examples/nextjs-v13/terraform/",
 		Reconfigure:  true,
-		VarFiles:     []string{"config/dev.tfvars"},
+		// The path of the var file in relation to TerraformDir
+		VarFiles: []string{"../../../config/terratest.tfvars"},
 	})
 
 	// At the end of the test, run `terraform destroy` to clean up any resources that were created
@@ -31,58 +29,24 @@ func TestTerraformAwsS3Example(t *testing.T) {
 	// This will run `terraform init` and `terraform apply` and fail the test if there are any errors
 	terraform.InitAndApply(t, terraformOptions)
 
-	// Cloudfront tests:
-	// 1) Route53 records: Make sure that there is a CNAME record between the cloudfront alias and the cloudfront URL
-	// 2) Call different paths, one for assets/public, one for _next/static and make sure that you're hitting the public and static buckets, respectively
-	// 3) Invoke the lambda function, make sure that you get the proper response
-	dynamicRes, _ := terraform.OutputMapOfObjectsE(t, terraformOptions, "dynamic-deploy")
-	staticRes, _ := terraform.OutputMapOfObjectsE(t, terraformOptions, "static-deploy")
-	resultDyn := gjson.Parse(fmt.Sprint(dynamicRes))
-	resultStat := gjson.Parse(fmt.Sprint(staticRes))
+	serverlessModule := terraform.OutputJson(t, terraformOptions, "next_serverless")
+	resultStat := gjson.Parse(fmt.Sprint(serverlessModule))
+	aliasURL := resultStat.Get("static-deploy.next_distribution.aliases.0").String()
+	tlsConfig := tls.Config{}
 
-	// Domain check
-	customDomain := resultStat.Get("next_distribution.aliases.0")
-	actualCustomDomain := "nextjs-teufel.mo.sandboxes.nexode-consulting.net"
-	assert.Contains(t, customDomain, actualCustomDomain)
+	// Integration tests
+	// 1) Call to the / path: This should hit the lambda and return 200, along with the text next.js
+	code1, body := http_helper.HttpGet(t, "https://"+aliasURL, &tlsConfig)
+	assert.Equal(t, code1, 200)
+	assert.Contains(t, strings.ToLower(body), "next.js")
 
-	// Certificate used should be in the us-east-1 region
-	certificateARN := resultStat.Get("next_distribution.viewer_certificate.0.acm_certificate_arn")
-	actualCertificateARN := aws.GetAcmCertificateArn(t, "us-east-1", actualCustomDomain)
-	assert.Equal(t, certificateARN, actualCertificateARN)
+	// 2) Call to the public bucket: This object should be returned with 200
+	code2, _ := http_helper.HttpGet(t, "https://"+aliasURL+"/assets/vercel.svg", &tlsConfig)
+	assert.Equal(t, code2, 200)
 
-	// Cloudfront URL should be used in the Route53 record set so that the alias works, and the requests are forwarded to CloudFront
-	// cloudfrontURL := resultStat.Get("next_distribution.domain_name")
-	// actualCloudfrontURL := "some string" //TODO get this from a DNS lookup
-	// assert.Equal(t, cloudfrontURL, actualCloudfrontURL)
+	// 3) Call to the static bucket: This object should be returned with 200
+	code3, _ := http_helper.HttpGet(t, "https://"+aliasURL+"/_next/static/css/6aaa4fa06f977cba.css", &tlsConfig)
+	assert.Equal(t, code3, 200)
 
-	// API Gateway should be used as the default / path to the CloudFront entry.
-	actualApigatewayURL := resultDyn.Get("api_gateway.apigatewayv2_api_api_endpoint")
-	apigatewayURL := resultStat.Get("next_distribution.origin.0.domain_name")
-	assert.Equal(t, apigatewayURL, actualApigatewayURL)
-
-	// Let's not forget to use the Public Assets bucket in the CloudFront routes, which should correspond with the /assets/public path
-	publicAssetsBucketURL := resultStat.Get("next_distribution.origin.1.domain_name")
-	actualPublicAssetsBucketURL := resultStat.Get("public_assets_bucket.s3_bucket_bucket_regional_domain_name")
-	assert.Equal(t, publicAssetsBucketURL, actualPublicAssetsBucketURL)
-
-	// Let's not forget to use the Static Assets bucket in the CloudFront routes, which should correspond with the /_next/static path
-	staticAssetsBucketURL := resultStat.Get("next_distribution.origin.2.domain_name")
-	actualStaticAssetsBucketURL := resultStat.Get("static_assets_bucket.s3_bucket_bucket_regional_domain_name")
-	assert.Equal(t, staticAssetsBucketURL, actualStaticAssetsBucketURL)
-
-	// Let's call the function once TODO
-	functionName := resultDyn.Get("next_lambda.lambda_function_name").String()
-	response := aws.InvokeFunction(t, awsRegion, functionName, ExampleFunctionPayload{ShouldFail: false, Echo: "hi!"})
-	print(response)
-	// assert.Equal(t, `"hi!"`, string(response))
-	// assert.Contains(t, string(functionError.Payload), "Failed to handle")
-
-	// Let's make a call to the /assets/public path TODO
-
-	// Let's make a call to the /_next/static path TODO
-}
-
-type ExampleFunctionPayload struct {
-	Echo       string
-	ShouldFail bool
+	// time.Sleep(20 * time.Second)
 }
