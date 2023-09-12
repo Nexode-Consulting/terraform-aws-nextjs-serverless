@@ -37,7 +37,7 @@ module "next_lambda" {
   function_name = "${var.deployment_name}-server-lambda"
   description   = "${var.deployment_name} Server"
 
-  lambda_at_edge               = true
+  lambda_at_edge               = false
   runtime                      = var.runtime
   memory_size                  = var.lambda_memory_size
   ephemeral_storage_size       = 512
