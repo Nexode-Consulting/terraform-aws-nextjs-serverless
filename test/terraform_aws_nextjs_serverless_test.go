@@ -127,20 +127,20 @@ func checkIfFilesExist(t *testing.T, fileList []string, aliasURL string) {
 }
 
 // test stage for the files mentioned in required-server-files.json
-func getRequiredServerFiles(aliasURL string) []string {
-	// Locally stored location of this file, we don't expect this to change?
-	requiredServerFiles, _ := os.ReadFile("../examples/nextjs-v13/standalone/.next/required-server-files.json")
-	RSFData := gjson.Parse(string(requiredServerFiles)).Get("files").String()
-	var fileList []string
-	gjson.Parse(RSFData).ForEach(func(_, value gjson.Result) bool {
-		stringValue := value.String()
-		stringValue = "/_" + stringValue[1:]
-		stringValue = strings.ReplaceAll(stringValue, "\\", "/")
-		fileList = append(fileList, stringValue)
-		return true
-	})
-	return fileList
-}
+// func getRequiredServerFiles(aliasURL string) []string {
+// 	// Locally stored location of this file, we don't expect this to change?
+// 	requiredServerFiles, _ := os.ReadFile("../examples/nextjs-v13/standalone/.next/required-server-files.json")
+// 	RSFData := gjson.Parse(string(requiredServerFiles)).Get("files").String()
+// 	var fileList []string
+// 	gjson.Parse(RSFData).ForEach(func(_, value gjson.Result) bool {
+// 		stringValue := value.String()
+// 		stringValue = "/_" + stringValue[1:]
+// 		stringValue = strings.ReplaceAll(stringValue, "\\", "/")
+// 		fileList = append(fileList, stringValue)
+// 		return true
+// 	})
+// 	return fileList
+// }
 
 // test stage for the files mentioned in build-manifest.json
 func getStaticAssets(aliasURL string) []string {
