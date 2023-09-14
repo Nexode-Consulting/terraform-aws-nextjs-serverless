@@ -3,7 +3,6 @@ module "next_serverless" {
 
   deployment_name = var.deployment_name
   region          = var.region
-  # global_region   = "us-east-1"
   base_dir        = var.base_dir
 
   cloudfront_acm_certificate_arn = module.next_cloudfront_certificate.acm_certificate_arn
