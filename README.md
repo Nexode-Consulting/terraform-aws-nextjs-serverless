@@ -55,7 +55,5 @@ This module is tested with terratest, which is essentially a Go test library wit
 To run the tests manually:
 ```bash
 cd test/
-go mod init <my_module>
-go mod tidy
 go test -v -timeout 30m //This makes sure that the entire infrastructure can be deployed, tested and destroyed, since Go packages time out at 10 minute mark. If you still timeout or your CI/CD tool is stuck, this is the first place to look.
 ```
