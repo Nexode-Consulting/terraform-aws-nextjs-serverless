@@ -1,0 +1,20 @@
+{
+  "name": "image-optimization",
+  "version": "0.1.0",
+  "description": "Image Optimization Lambda",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc",
+    "prepare-lambda": "bash scripts/prepare-lambda.sh"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^20.8.4",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.2.2"
+  },
+  "dependencies": {
+    "sharp": "^0.32.6"
+  }
+}

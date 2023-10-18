@@ -18,3 +18,11 @@ variable "cloudfront_acm_certificate_arn" {
 variable "cloudfront_aliases" {
   type = list(string)
 }
+
+variable "image_optimization_qualified_arn" {
+  type = string
+}
+
+variable "image_redirection_qualified_arn" {
+  type = string
+}

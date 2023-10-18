@@ -15,7 +15,7 @@ rm -r ./app
 mv ./app-backup ./app
 
 cp -a .next/static .next/standalone/.next
-cp -a public .next/standalone
+# cp -a public .next/standalone
 
 cp -a .next/standalone standalone
 rm standalone/server.js
@@ -37,8 +37,8 @@ zip -r deployments/layer.zip nodejs
 cd standalone
 mkdir -p static/_next
 cp -a .next/static static/_next
-mkdir public/assets
-cp -a public/* public/assets
+# mkdir public/assets
+# cp -a public/* public/assets
 
 rm -r node_modules
 find . -name '*.html' -exec sed -i.backup 's|src="/|src="/assets/|g' '{}' \; 

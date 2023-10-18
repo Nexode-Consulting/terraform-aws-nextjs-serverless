@@ -3,32 +3,36 @@ module "next_serverless" {
 
   deployment_name = var.deployment_name
   region          = var.region
-  global_region   = var.global_region
   base_dir        = var.base_dir
 
-  cloudfront_acm_certificate_arn = module.next_cloudfront_certificate.acm_certificate_arn
-  cloudfront_aliases             = [var.deployment_domain]
+  cloudfront_acm_certificate_arn = (var.deployment_domain != null) ? module.next_cloudfront_certificate.acm_certificate_arn : null
+  cloudfront_aliases             = (var.deployment_domain != null) ? [var.deployment_domain] : []
 }
 
 module "next_cloudfront_certificate" {
+  count = (var.deployment_domain != null) ? 1 : 0
+
   source  = "terraform-aws-modules/acm/aws"
   version = "4.3.2"
 
-  domain_name = var.deployment_domain
-  zone_id     = data.aws_route53_zone.hosted_zone.zone_id
+  domain_name = (var.deployment_domain != null) ? var.deployment_domain : null
+  zone_id     = (var.deployment_domain != null) ? data.aws_route53_zone.hosted_zone[0].zone_id : null
 
   providers = {
     aws = aws.global_region
   }
 }
 
-
 data "aws_route53_zone" "hosted_zone" {
+  count = (var.hosted_zone != null) ? 1 : 0
+
   name = var.hosted_zone
 }
 
 resource "aws_route53_record" "next_cloudfront_alias" {
-  zone_id = data.aws_route53_zone.hosted_zone.zone_id
+  count = (var.deployment_domain != null) ? 1 : 0
+
+  zone_id = data.aws_route53_zone.hosted_zone[0].zone_id
   name    = var.deployment_domain
   type    = "A"
 
