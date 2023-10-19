@@ -31,12 +31,20 @@ Ensure that the deployment name is unique since its used for creating s3 buckets
 ```
 main.tf
 
+provider "aws" {
+  region = "eu-central-1" # customize your region
+}
+
+provider "aws" {
+  alias  = "global_region"
+  region = "us-east-1"
+}
+
 module "next_serverless" {
   source  = "Nexode-Consulting/nextjs-serverless/aws"
 
   deployment_name = "nextjs-serverless" #needs to be unique since it will create an s3 bucket
-  region = "eu-central-1"
-  global_region = "us-east-1"
+  region = "eu-central-1" # customize your region
   base_dir = "./"
 }
 ```
@@ -44,7 +52,6 @@ module "next_serverless" {
 ### Deployment
 Build the Next.js Code and deploy
 ```bash
-npm i
 num run build-serverless-next
 terraform apply
 ```

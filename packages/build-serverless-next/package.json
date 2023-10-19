@@ -1,7 +1,7 @@
 {
   "name": "build-serverless-next",
   "version": "0.1.0",
-  "description": "Bash script to serverless component for deploying to aws",
+  "description": "Bash script to build serverless component for deploying to AWS using Terraform",
   "bin": {
     "build-serverless-next": "./bin/build-serverless-next.sh"
   },

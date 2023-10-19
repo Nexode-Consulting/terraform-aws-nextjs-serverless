@@ -3,18 +3,61 @@ It contains the MIME types for various image formats.
 These image types are prioritized in the array, with the most preferred format at the beginning. */
 const imageTypes = [
   'image/webp',
-  'image/avif',
+  // 'image/avif',
   'image/jpeg',
   'image/png',
-  'image/svg+xml',
-  'image/gif',
-  'mage/apng',
+  // 'image/svg+xml',
+  // 'image/gif',
+  // 'image/apng',
 ]
 
+/**
+ * The function `redirectTo` is used to create a redirect response with a specified URL.
+ * @param {string} url - The `url` parameter is a string that represents the URL to which you want to
+ * redirect the user.
+ * @param {any} callback - The `callback` parameter is a function that is used to return the response
+ * to the caller. It takes two arguments: an error object (if any) and the response object. In this
+ * case, the response object is an HTTP response with a status code of 302 (Redirect) and a `
+ * @returns a callback function with two arguments: null and an object representing a response.
+ */
+const redirectTo = (url: string, callback: any) => {
+  const response = {
+    status: 302,
+    statusDescription: 'Redirect',
+    headers: {
+      location: [
+        {
+          key: 'Location',
+          value: url,
+        },
+      ],
+    },
+  }
+
+  return callback(null, response)
+}
+
+/**
+ * This TypeScript function handles image requests and redirects them to the appropriate image URL
+ * based on the request parameters and headers.
+ * @param {any} event - The `event` parameter is an object that contains information about the event
+ * that triggered the Lambda function. In this case, it is expected to have a `Records` property, which
+ * is an array of records. Each record represents a CloudFront event and contains information about the
+ * request and configuration.
+ * @param {any} _context - The `_context` parameter is a context object that contains information about
+ * the execution environment and runtime. It is typically used to access information such as the AWS
+ * Lambda function name, version, and memory limit. In this code snippet, the `_context` parameter is
+ * not used, so it can be safely ignored
+ * @param {any} callback - The `callback` parameter is a function that you can use to send a response
+ * back to the caller. It takes two arguments: an error object (or null if there is no error) and a
+ * response object. The response object should contain the necessary information to return a response
+ * to the caller, such
+ * @returns The code is returning a redirect response to a specified URL.
+ */
 export const handler = async (event: any, _context: any, callback: any) => {
   try {
-    /* Extract the `request` properties. */
-    const request = event?.Records?.[0]?.cf?.request
+    /* Extract the `request` and `config` properties. */
+    const { request, config } = event?.Records?.[0]?.cf
 
     /* This forms the base URL for the redirect. */
     const baseUrl = '/_next/image'
@@ -29,6 +72,15 @@ export const handler = async (event: any, _context: any, callback: any) => {
         }),
         {}
       )
+
+    // Return original image if it's image/gif or image/svg+xml
+    const regex = /\.(gif|svg|xml)$/
+    if (regex.test(query?.url)) {
+      /* The URL for the original image. */
+      const imageUrl =
+        'https://' + config?.distributionDomainName + '/assets' + query?.url
+      return redirectTo(imageUrl, callback)
+    }
 
     /* Extract the value of the "accept" header from the request headers. */
     const acceptHeader: string = request?.headers?.accept?.find(
@@ -58,21 +110,7 @@ export const handler = async (event: any, _context: any, callback: any) => {
       query?.url.replace('%2F', ''),
     ].join('/')
 
-    /* Define the response. */
-    const response = {
-      status: 302,
-      statusDescription: 'Redirect',
-      headers: {
-        location: [
-          {
-            key: 'Location',
-            value: redirectToUrl,
-          },
-        ],
-      },
-    }
-
-    return callback(null, response)
+    return redirectTo(redirectToUrl, callback)
   } catch (error) {
     console.error({ error })
 

@@ -124,8 +124,8 @@ resource "aws_cloudfront_origin_access_identity" "dynamic_assets_oai" {
   comment = "dynamic_assets_origin"
 }
 
-resource "aws_cloudfront_origin_access_identity" "image_optimizer_oai" {
-  comment = "image_optimizer_origin"
+resource "aws_cloudfront_origin_access_identity" "image_optimization_oai" {
+  comment = "image_optimization_origin"
 }
 
 ####################################
@@ -165,7 +165,7 @@ resource "aws_cloudfront_distribution" "next_distribution" {
 
   origin {
     domain_name = "example.com"
-    origin_id   = aws_cloudfront_origin_access_identity.image_optimizer_oai.id
+    origin_id   = aws_cloudfront_origin_access_identity.image_optimization_oai.id
 
     custom_origin_config {
       http_port              = "80"
@@ -175,9 +175,8 @@ resource "aws_cloudfront_distribution" "next_distribution" {
     }
   }
 
-  wait_for_deployment = false # TODO: remove
-  enabled             = true
-  is_ipv6_enabled     = true
+  enabled         = true
+  is_ipv6_enabled = true
 
   aliases             = var.cloudfront_aliases
   default_root_object = null
@@ -294,6 +293,16 @@ resource "aws_cloudfront_distribution" "next_distribution" {
   restrictions {
     geo_restriction {
       restriction_type = "none"
+    }
+  }
+}
+
+resource "aws_cloudfront_monitoring_subscription" "next_distribution_monitoring" {
+  distribution_id = aws_cloudfront_distribution.next_distribution.id
+
+  monitoring_subscription {
+    realtime_metrics_subscription_config {
+      realtime_metrics_subscription_status = "Enabled"
     }
   }
 }

@@ -26,3 +26,29 @@ export const fetchBufferFromUrl = (url: string): Promise<Buffer> => {
     })
   })
 }
+
+/**
+ * The function `redirectTo` is used to create a redirect response with a specified URL.
+ * @param {string} url - The `url` parameter is a string that represents the URL to which you want to
+ * redirect the user.
+ * @param {any} callback - The `callback` parameter is a function that is used to return the response
+ * to the caller. It takes two arguments: an error object (if any) and the response object. In this
+ * case, the response object is an HTTP response with a status code of 302 (Redirect) and a `
+ * @returns a callback function with two arguments: null and an object representing a response.
+ */
+export const redirectTo = (url: string, callback: any) => {
+  const response = {
+    status: 302,
+    statusDescription: 'Redirect',
+    headers: {
+      location: [
+        {
+          key: 'Location',
+          value: url,
+        },
+      ],
+    },
+  }
+
+  return callback(null, response)
+}
