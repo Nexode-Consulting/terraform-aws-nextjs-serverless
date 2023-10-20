@@ -31,6 +31,12 @@ const redirectTo = (url: string, callback: any) => {
           value: url,
         },
       ],
+      'cache-control': [
+        {
+          key: 'Cache-Control',
+          value: 'public, max-age=600, stale-while-revalidate=2592000', // Serve cached content up to 30 days old while revalidating it after 10 minutes
+        },
+      ],
     },
   }
 

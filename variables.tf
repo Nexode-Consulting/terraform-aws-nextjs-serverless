@@ -31,6 +31,12 @@ variable "cloudfront_aliases" {
   default     = []
 }
 
+variable "cloudfront_price_class" {
+  description = "Price class for the CloudFront distribution. Options: PriceClass_All, PriceClass_200, PriceClass_100"
+  type        = string
+  default     = "PriceClass_100"
+}
+
 # Example:
 # next_lambda_env_vars = {
 #   BACKEND_VIRTUAL_DOMAIN    = "backend.example.com"

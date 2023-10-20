@@ -16,6 +16,7 @@ module "static-deploy" {
   dynamic_origin_domain_name       = module.dynamic-deploy.api_gateway.default_apigatewayv2_stage_domain_name
   cloudfront_acm_certificate_arn   = var.cloudfront_acm_certificate_arn
   cloudfront_aliases               = var.cloudfront_aliases
+  cloudfront_price_class           = var.cloudfront_price_class
   image_optimization_qualified_arn = module.dynamic-deploy.image_optimization.lambda_function_qualified_arn
   image_redirection_qualified_arn  = module.dynamic-deploy.image_redirection.lambda_function_qualified_arn
 }

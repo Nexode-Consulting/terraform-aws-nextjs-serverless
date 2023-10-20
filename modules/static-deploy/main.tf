@@ -200,6 +200,10 @@ resource "aws_cloudfront_distribution" "next_distribution" {
       }
     }
 
+    default_ttl = 600
+    max_ttl     = 2592000
+    min_ttl     = 0
+
     viewer_protocol_policy = "redirect-to-https"
     compress               = true
   }
@@ -224,6 +228,10 @@ resource "aws_cloudfront_distribution" "next_distribution" {
       }
     }
 
+    default_ttl = 600
+    max_ttl     = 2592000
+    min_ttl     = 0
+
     viewer_protocol_policy = "redirect-to-https"
     compress               = true
   }
@@ -242,6 +250,10 @@ resource "aws_cloudfront_distribution" "next_distribution" {
       }
     }
 
+    default_ttl = 600
+    max_ttl     = 2592000
+    min_ttl     = 0
+
     viewer_protocol_policy = "redirect-to-https"
     compress               = true
   }
@@ -259,6 +271,10 @@ resource "aws_cloudfront_distribution" "next_distribution" {
         forward = "all"
       }
     }
+
+    default_ttl = 600
+    max_ttl     = 2592000
+    min_ttl     = 0
 
     viewer_protocol_policy = "redirect-to-https"
     compress               = true
@@ -281,7 +297,7 @@ resource "aws_cloudfront_distribution" "next_distribution" {
     compress               = true
   }
 
-  price_class = "PriceClass_100"
+  price_class = var.cloudfront_price_class
 
   viewer_certificate {
     cloudfront_default_certificate = var.cloudfront_acm_certificate_arn == null
