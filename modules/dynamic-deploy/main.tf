@@ -149,7 +149,7 @@ module "image_optimization" {
   maximum_retry_attempts       = 0
 
   create_package         = false
-  local_existing_package = "../../../lambdas/image-optimization/source.zip"
+  local_existing_package = "${var.base_dir}deployments/image-optimization/source.zip"
   handler                = "index.handler"
 
   attach_network_policy             = false
@@ -187,7 +187,7 @@ module "image_redirection" {
   maximum_retry_attempts       = 0
 
   create_package         = false
-  local_existing_package = "../../../lambdas/image-redirection/source.zip"
+  local_existing_package = "${var.base_dir}deployments/image-redirection/source.zip"
   handler                = "index.handler"
 
   attach_network_policy             = false
