@@ -1,3 +1,5 @@
+data "aws_region" "current" {}
+
 ####################################
 ############ lambdas_oai ###########
 ####################################
@@ -71,6 +73,16 @@ resource "aws_cloudfront_distribution" "next_distribution" {
       origin_protocol_policy = "https-only"
       origin_ssl_protocols   = ["TLSv1.2"]
     }
+
+    custom_header {
+      name  = "S3-region"
+      value = data.aws_region.current
+    }
+
+    custom_header {
+      name  = "Public-Assets-Bucket"
+      value = var.public_assets_bucket.s3_bucket_id
+    }
   }
 
   enabled         = true
@@ -83,7 +95,7 @@ resource "aws_cloudfront_distribution" "next_distribution" {
     path_pattern     = "/_next/image/*"
     allowed_methods  = ["GET", "HEAD", "OPTIONS"]
     cached_methods   = ["GET", "HEAD", "OPTIONS"]
-    target_origin_id = var.public_assets_origin_id.id
+    target_origin_id = aws_cloudfront_origin_access_identity.image_optimization_oai.id
 
     lambda_function_association {
       event_type = "origin-request"
@@ -110,7 +122,7 @@ resource "aws_cloudfront_distribution" "next_distribution" {
     path_pattern     = "/_next/image*"
     allowed_methods  = ["GET", "HEAD", "OPTIONS"]
     cached_methods   = ["GET", "HEAD", "OPTIONS"]
-    target_origin_id = var.public_assets_origin_id.id
+    target_origin_id = aws_cloudfront_origin_access_identity.image_redirection_oai.id
 
     lambda_function_association {
       event_type   = "viewer-request"
@@ -135,7 +147,7 @@ resource "aws_cloudfront_distribution" "next_distribution" {
   }
 
   ordered_cache_behavior {
-    path_pattern     = "/_next/*"
+    path_pattern     = "/_next/static/*"
     allowed_methods  = ["GET", "HEAD", "OPTIONS"]
     cached_methods   = ["GET", "HEAD", "OPTIONS"]
     target_origin_id = var.static_assets_origin_id.id

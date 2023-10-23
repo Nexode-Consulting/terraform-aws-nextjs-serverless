@@ -39,6 +39,15 @@ module "image_optimization" {
     allow_origins     = ["*"]
     allow_methods     = ["*"]
   }
+
+  attach_policy_statements = true
+  policy_statements = {
+    s3_public_assets_bucket = {
+      effect    = "Allow",
+      actions   = ["s3:GetObject"],
+      resources = ["${var.public_assets_bucket.s3_bucket_arn}/*"]
+    }
+  }
 }
 
 ####################################

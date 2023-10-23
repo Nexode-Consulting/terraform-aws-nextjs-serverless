@@ -1,6 +1,7 @@
 import https from 'https'
 
 /**
+ * @deprecated
  * The function fetchBufferFromUrl fetches a buffer from a given URL using the https module in Node.js.
  * @param {string} url - The `url` parameter is a string that represents the URL from which you want to
  * fetch the buffer.

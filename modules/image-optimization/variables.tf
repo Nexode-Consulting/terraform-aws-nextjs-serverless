@@ -20,3 +20,7 @@ variable "deployment_name" {
 variable "base_dir" {
   type = string
 }
+
+variable "public_assets_bucket" {
+  type = map(any)
+}

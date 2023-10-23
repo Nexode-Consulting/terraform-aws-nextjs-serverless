@@ -1,6 +1,8 @@
-import { defaults, limits } from './constants'
-import { fetchBufferFromUrl, redirectTo } from './helpers'
+import { GetObjectCommand, S3Client } from '@aws-sdk/client-s3'
 import sharp from 'sharp'
+
+import { defaults, limits } from './constants'
+import { redirectTo } from './helpers'
 
 /**
  * This TypeScript function is a CloudFront function that resizes and compresses images based on the
@@ -24,28 +26,49 @@ export const handler = async (event: any, _context: any, callback: any) => {
     /* Construct the base URL for the image assets. */
     const baseUrl = config?.distributionDomainName + '/assets/'
 
+    /* The S3 region. */
+    const s3Region =
+      request?.origin?.custom?.customHeaders?.['S3-region']?.[0]?.value
+    /* The public_assets_bucket name. */
+    const publicAssetsBucket =
+      request?.origin?.custom?.customHeaders?.['public-assets-bucket']?.[0]
+        ?.value
+
     /* Extracting the relevant information from the request URI. */
     const queryString = (request?.uri as string)
       ?.replace('/_next/image/', '')
       ?.split('/')
+    // Build an object with these information
     const query = {
       width: parseInt(queryString?.[0] || defaults.width.toString()),
       quality: parseInt(queryString?.[1] || defaults.quality.toString()),
       type: 'image/' + queryString?.[2],
       filename: queryString?.slice(3)?.join('/'),
     }
+
+    // The url where the image is stored
+    const imageUrl = 'https://' + baseUrl + query.filename
+    // The options for image transformation
     const options = {
       quality: query.quality,
     }
 
-    // The url where the image is stored
-    const imageUrl = 'https://' + baseUrl + query.filename
-    /* Fetching the image data and returning them as a
-    buffer. */
-    const buffer = await fetchBufferFromUrl(imageUrl)
+    /* The S3 Client. */
+    const s3 = new S3Client({ region: s3Region })
+
+    /* Build the s3 command. */
+    const s3Command = new GetObjectCommand({
+      Bucket: publicAssetsBucket,
+      Key: 'assets/' + query.filename.replace('%2F', '/'),
+    })
+
+    /* The body of the S3 object. */
+    const { Body } = await s3.send(s3Command)
+    /* Transforming the body of the S3 object into a byte array. */
+    const s3Object = await Body.transformToByteArray()
 
     /* Resize and compress the image. */
-    const resizedImage = sharp(buffer).resize({ width: query.width })
+    const resizedImage = sharp(s3Object).resize({ width: query.width })
 
     let newContentType = null
     /* Apply the corresponding image type transformation. */

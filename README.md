@@ -52,6 +52,6 @@ module "next_serverless" {
 ### Deployment
 Build the Next.js Code and deploy
 ```bash
-num run build-serverless-next
+npm run build-serverless-next
 terraform apply
 ```

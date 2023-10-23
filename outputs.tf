@@ -25,5 +25,5 @@ output "distribution" {
 
 output "cloudfront_url" {
   value       = module.distribution.next_distribution.domain_name
-  description = "Resources created by the cloudfront_url module"
+  description = "The URL where cloudfront hosts the distribution"
 }

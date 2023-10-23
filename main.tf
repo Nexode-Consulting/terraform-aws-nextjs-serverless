@@ -12,13 +12,6 @@ module "public-assets-hosting" {
   base_dir        = var.base_dir
 }
 
-module "image-optimization" {
-  source = "./modules/image-optimization"
-
-  deployment_name = var.deployment_name
-  base_dir        = var.base_dir
-}
-
 module "server-side-rendering" {
   source = "./modules/server-side-rendering"
 
@@ -27,6 +20,15 @@ module "server-side-rendering" {
 
   next_lambda_env_vars          = var.next_lambda_env_vars
   next_lambda_policy_statements = var.next_lambda_policy_statements
+}
+
+module "image-optimization" {
+  source = "./modules/image-optimization"
+
+  deployment_name = var.deployment_name
+  base_dir        = var.base_dir
+
+  public_assets_bucket = module.public-assets-hosting.public_assets_bucket
 }
 
 module "distribution" {
