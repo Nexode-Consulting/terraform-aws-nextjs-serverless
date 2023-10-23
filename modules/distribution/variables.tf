@@ -1,11 +1,3 @@
-variable "deployment_name" {
-  type = string
-}
-
-variable "base_dir" {
-  type = string
-}
-
 variable "dynamic_origin_domain_name" {
   type = string
 }
@@ -29,4 +21,20 @@ variable "image_optimization_qualified_arn" {
 
 variable "image_redirection_qualified_arn" {
   type = string
+}
+
+variable "static_assets_bucket" {
+  type = map(any)
+}
+
+variable "static_assets_origin_id" {
+  type = map(any)
+}
+
+variable "public_assets_bucket" {
+  type = map(any)
+}
+
+variable "public_assets_origin_id" {
+  type = map(any)
 }

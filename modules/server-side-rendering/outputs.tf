@@ -2,14 +2,6 @@ output "next_lambda" {
   value = module.next_lambda
 }
 
-output "image_optimization" {
-  value = module.image_optimization
-}
-
-output "image_redirection" {
-  value = module.image_redirection
-}
-
 output "api_gateway" {
   value = module.api_gateway
 }

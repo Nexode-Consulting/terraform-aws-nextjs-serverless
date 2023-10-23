@@ -42,7 +42,7 @@ resource "aws_route53_record" "next_cloudfront_alias" {
 
   alias {
     name                   = module.next_serverless.cloudfront_url
-    zone_id                = module.next_serverless.static-deploy.next_distribution.hosted_zone_id
+    zone_id                = module.next_serverless.distribution.next_distribution.hosted_zone_id
     evaluate_target_health = false
   }
 }
