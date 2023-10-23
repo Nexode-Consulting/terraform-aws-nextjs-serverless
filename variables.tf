@@ -53,3 +53,18 @@ variable "next_lambda_policy_statements" {
   type        = map(any)
   default     = {}
 }
+
+variable "lambda_memory_size" {
+  type    = number
+  default = 4096
+}
+
+variable "runtime" {
+  type    = string
+  default = "nodejs16.x"
+}
+
+variable "logs_retention" {
+  type    = number
+  default = 30
+}

@@ -18,6 +18,10 @@ module "server-side-rendering" {
   deployment_name = var.deployment_name
   base_dir        = var.base_dir
 
+  lambda_memory_size = var.lambda_memory_size
+  logs_retention     = var.logs_retention
+  runtime            = var.runtime
+
   next_lambda_env_vars          = var.next_lambda_env_vars
   next_lambda_policy_statements = var.next_lambda_policy_statements
 }
@@ -27,6 +31,9 @@ module "image-optimization" {
 
   deployment_name = var.deployment_name
   base_dir        = var.base_dir
+
+  runtime        = var.runtime
+  logs_retention = var.logs_retention
 
   public_assets_bucket = module.public-assets-hosting.public_assets_bucket
 }

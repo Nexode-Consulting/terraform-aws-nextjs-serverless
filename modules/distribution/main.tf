@@ -1,4 +1,4 @@
-data "aws_region" "current" {}
+data "aws_region" "region" {}
 
 ####################################
 ############ lambdas_oai ###########
@@ -76,7 +76,7 @@ resource "aws_cloudfront_distribution" "next_distribution" {
 
     custom_header {
       name  = "S3-region"
-      value = data.aws_region.current
+      value = data.aws_region.region.id
     }
 
     custom_header {
