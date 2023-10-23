@@ -44,9 +44,9 @@ module "distribution" {
   static_assets_bucket    = module.static-assets-hosting.static_assets_bucket
   static_assets_origin_id = module.static-assets-hosting.static_assets_oai
 
-  public_assets_bucket    = module.public-assets-hosting.public_assets_bucket
-  public_assets_origin_id = module.public-assets-hosting.public_assets_oai
-
+  public_assets_bucket        = module.public-assets-hosting.public_assets_bucket
+  public_assets_bucket_region = var.region
+  public_assets_origin_id     = module.public-assets-hosting.public_assets_oai
 
   dynamic_origin_domain_name = module.server-side-rendering.api_gateway.default_apigatewayv2_stage_domain_name
 

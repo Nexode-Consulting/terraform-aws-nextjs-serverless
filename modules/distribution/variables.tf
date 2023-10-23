@@ -35,6 +35,10 @@ variable "public_assets_bucket" {
   type = map(any)
 }
 
+variable "public_assets_bucket_region" {
+  type = string
+}
+
 variable "public_assets_origin_id" {
   type = map(any)
 }

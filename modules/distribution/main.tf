@@ -1,5 +1,3 @@
-data "aws_region" "region" {}
-
 ####################################
 ############ lambdas_oai ###########
 ####################################
@@ -76,7 +74,7 @@ resource "aws_cloudfront_distribution" "next_distribution" {
 
     custom_header {
       name  = "S3-region"
-      value = data.aws_region.region.id
+      value = var.public_assets_bucket_region
     }
 
     custom_header {
