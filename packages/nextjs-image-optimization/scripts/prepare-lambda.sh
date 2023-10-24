@@ -16,4 +16,5 @@ zip -r ../source.zip *
 cd ..
 
 # cleanup
+rm -r build/
 npm i

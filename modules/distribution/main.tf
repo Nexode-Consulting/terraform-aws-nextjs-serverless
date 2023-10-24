@@ -73,7 +73,7 @@ resource "aws_cloudfront_distribution" "next_distribution" {
     }
 
     custom_header {
-      name  = "S3-region"
+      name  = "S3-Region"
       value = var.public_assets_bucket_region
     }
 

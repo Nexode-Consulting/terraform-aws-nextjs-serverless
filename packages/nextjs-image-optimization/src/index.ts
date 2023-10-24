@@ -28,7 +28,7 @@ export const handler = async (event: any, _context: any, callback: any) => {
 
     /* The S3 region. */
     const s3Region =
-      request?.origin?.custom?.customHeaders?.['S3-region']?.[0]?.value
+      request?.origin?.custom?.customHeaders?.['s3-region']?.[0]?.value
     /* The public_assets_bucket name. */
     const publicAssetsBucket =
       request?.origin?.custom?.customHeaders?.['public-assets-bucket']?.[0]
