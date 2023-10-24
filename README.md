@@ -55,3 +55,12 @@ Build the Next.js Code and deploy
 npm run build-serverless-next
 terraform apply
 ```
+
+
+## Visualization
+
+### Module Diagram
+![Module Diagram](visuals/module-diagram.png)
+
+### Distribution Diagram
+![Distribution Diagram](visuals/distribution-diagram.png)
