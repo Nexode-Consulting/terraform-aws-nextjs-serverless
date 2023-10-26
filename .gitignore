@@ -49,4 +49,6 @@ examples/nextjs-v13/terraform/.terraform*
 **/deployments/
 **/standalone/
 
+packages/**/*.zip
+
 .idea/
