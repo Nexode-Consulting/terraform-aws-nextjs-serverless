@@ -31,6 +31,12 @@ variable "cloudfront_aliases" {
   default     = []
 }
 
+variable "cloudfront_price_class" {
+  description = "Price class for the CloudFront distribution. Options: PriceClass_All, PriceClass_200, PriceClass_100"
+  type        = string
+  default     = "PriceClass_100"
+}
+
 # Example:
 # next_lambda_env_vars = {
 #   BACKEND_VIRTUAL_DOMAIN    = "backend.example.com"
@@ -46,4 +52,19 @@ variable "next_lambda_policy_statements" {
   description = "Map of dynamic policy statements to attach to Lambda Function role"
   type        = map(any)
   default     = {}
+}
+
+variable "lambda_memory_size" {
+  type    = number
+  default = 4096
+}
+
+variable "runtime" {
+  type    = string
+  default = "nodejs16.x"
+}
+
+variable "logs_retention" {
+  type    = number
+  default = 30
 }

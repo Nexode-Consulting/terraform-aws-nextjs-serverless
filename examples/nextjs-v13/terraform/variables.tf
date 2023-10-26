@@ -1,6 +1,6 @@
 variable "deployment_name" {
   type    = string
-  default = "example-nextjs-serverless"
+  default = "example-next-serverless"
 }
 
 variable "region" {
@@ -15,12 +15,14 @@ variable "global_region" {
 
 variable "hosted_zone" {
   description = "Hosted Zone in Route53, e.g. my-dns-zone.de"
-  type = string
+  type        = string
+  default     = null
 }
 
 variable "deployment_domain" {
-  type = string
+  type        = string
   description = "Url where the deployment should be availale at, e.g. website1.my-dns-zone.de"
+  default     = null
 }
 
 variable "base_dir" {
