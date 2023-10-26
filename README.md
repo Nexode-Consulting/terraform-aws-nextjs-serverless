@@ -60,7 +60,10 @@ terraform apply
 ## Visualization
 
 ### Module Diagram
-![Module Diagram](visuals/module-diagram.png)
+![Module Diagram](https://github.com/Nexode-Consulting/terraform-aws-nextjs-serverless/blob/main/visuals/module.svg?raw=true)
 
 ### Distribution Diagram
-![Distribution Diagram](visuals/distribution-diagram.png)
+![Distribution Diagram](https://github.com/Nexode-Consulting/terraform-aws-nextjs-serverless/blob/main/visuals/distribution.svg?raw=true)
+
+### Cache Diagram
+![Cache Diagram](https://github.com/Nexode-Consulting/terraform-aws-nextjs-serverless/blob/main/visuals/cache.svg?raw=true)
