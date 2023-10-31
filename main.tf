@@ -32,8 +32,9 @@ module "image-optimization" {
   deployment_name = var.deployment_name
   base_dir        = var.base_dir
 
-  runtime        = var.runtime
-  logs_retention = var.logs_retention
+  runtime                               = var.runtime
+  logs_retention                        = var.logs_retention
+  image_optimization_lambda_memory_size = var.image_optimization_lambda_memory_size
 
   public_assets_bucket = module.public-assets-hosting.public_assets_bucket
 }

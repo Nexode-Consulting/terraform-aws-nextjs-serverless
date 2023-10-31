@@ -21,7 +21,7 @@ module "image_optimization" {
   lambda_at_edge               = true
   publish                      = true
   runtime                      = var.runtime
-  memory_size                  = 10240
+  memory_size                  = var.image_optimization_lambda_memory_size
   ephemeral_storage_size       = 512
   timeout                      = 30
   maximum_event_age_in_seconds = 60

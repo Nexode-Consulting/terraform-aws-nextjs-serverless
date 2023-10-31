@@ -17,3 +17,7 @@ variable "base_dir" {
 variable "public_assets_bucket" {
   type = map(any)
 }
+
+variable "image_optimization_lambda_memory_size" {
+  type = number
+}
