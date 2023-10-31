@@ -1,13 +1,13 @@
 module "next_serverless" {
   source = "../../../"
   # source  = "Nexode-Consulting/nextjs-serverless/aws"
-  # version = "0.2.5"
+  # version = "0.2.7"
 
   deployment_name = var.deployment_name
   region          = var.region
   base_dir        = var.base_dir
 
-  cloudfront_acm_certificate_arn = (var.deployment_domain != null) ? module.next_cloudfront_certificate.acm_certificate_arn : null
+  cloudfront_acm_certificate_arn = (var.deployment_domain != null) ? module.next_cloudfront_certificate[0].acm_certificate_arn : null
   cloudfront_aliases             = (var.deployment_domain != null) ? [var.deployment_domain] : []
 }
 

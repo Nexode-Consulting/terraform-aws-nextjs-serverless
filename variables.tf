@@ -55,16 +55,25 @@ variable "next_lambda_policy_statements" {
 }
 
 variable "lambda_memory_size" {
-  type    = number
-  default = 4096
+  description = "The memory size for the server side rendering Lambda"
+  type        = number
+  default     = 4096
+}
+
+variable "image_optimization_lambda_memory_size" {
+  description = "The memory size for the image optimization Lambda"
+  type        = number
+  default     = 2048
 }
 
 variable "runtime" {
-  type    = string
-  default = "nodejs16.x"
+  description = "The runtime for the Lambdas"
+  type        = string
+  default     = "nodejs16.x"
 }
 
 variable "logs_retention" {
-  type    = number
-  default = 30
+  description = "The number of days that cloudwatch logs should be retained"
+  type        = number
+  default     = 30
 }
