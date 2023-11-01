@@ -2,7 +2,6 @@ package test
 
 import (
 	"encoding/json"
-	"fmt"
 	"net/http"
 	"os"
 	"testing"
@@ -33,16 +32,11 @@ func TestNextServerlessModuleExampleApp(t *testing.T) {
 		PlanFilePath:       "./tf-plan",
 	})
 
-	// When all tests are asserted, destroy all terraform resources
 	defer terraform.Destroy(t, terraformOptions)
 
-	// init terraform
 	terraform.Init(t, terraformOptions)
-	// validate terraform
 	terraform.Validate(t, terraformOptions)
-	// plan terraform resources
 	terraform.Plan(t, terraformOptions)
-	// deploy all terraform resources
 	terraform.Apply(t, terraformOptions)
 
 	// export the terraform output
@@ -70,55 +64,47 @@ func redirectsImages(t *testing.T, distributionURL string, basePath string) {
 	// * Content type: image/…
 	filenames := getFilenamesFromDirectory(basePath + "/public")
 	status, contentType := customHttpGet(distributionURL + "/_next/image?url=/" + filenames[0] + "&w=256&q=75")
+
 	assert.Equal(t, status, 200)
 	assert.Contains(t, contentType, "image/")
 }
 
 // Tests the status and content type of an optimized image fetched from the distribution.
 func optimizesImages(t *testing.T, distributionURL string, basePath string) {
-	// /_next/image/redirection_url/… (redirection URL):
-	// * Status 200
-	// * Content type: image/…
 	filenames := getFilenamesFromDirectory(basePath + "/public")
 	status, contentType := customHttpGet(distributionURL + "/_next/image/" + "256/75/webp/" + filenames[0])
+
 	assert.Equal(t, status, 200)
 	assert.Contains(t, contentType, "image/")
 }
 
 // Tests the distribution of static assets by making HTTP requests the distribution and asserting the expected status code and content type.
 func distributesStaticAssets(t *testing.T, distributionURL string, basePath string) {
-	// /_next/static/css/(a static file from build):
-	// * Status 200
-	// * Content type: text/css
 	filenames := getFilenamesFromDirectory(basePath + "/standalone/static/_next/static/css")
 	status, contentType := customHttpGet(distributionURL + "/_next/static/css/" + filenames[0])
+
 	assert.Equal(t, status, 200)
 	assert.Equal(t, contentType, "text/css; charset=utf-8")
 
-	// /_next/static/css/(a static file from build):
-	// * Status 200
-	// * Content type: application/javascript
 	filenames = getFilenamesFromDirectory(basePath + "/standalone/static/_next/static/chunks")
 	status, contentType = customHttpGet(distributionURL + "/_next/static/chunks/" + filenames[0])
+
 	assert.Equal(t, status, 200)
 	assert.Equal(t, contentType, "application/javascript")
 }
 
 // Tests the status and content type of an image file retrieved from the distribution.
 func distributesPublicAssets(t *testing.T, distributionURL string) {
-	// /assets/(am image from public/.. folder):
-	// * Status 200
-	// * Content type: image/…
 	status, contentType := customHttpGet(distributionURL + "/assets/vercel.svg")
+
 	assert.Equal(t, status, 200)
 	assert.Contains(t, contentType, "image/")
 }
 
 // Tests if the server-side rendering (SSR) page is rendered correctly by checking the HTTP status code and the presence of a specific string in the response body.
 func rendersServerSide(t *testing.T, distributionURL string) {
-	// /(the ssr page):
-	// * Status 200
 	code, body := http_helper.HttpGet(t, distributionURL, nil)
+
 	assert.Equal(t, code, 200)
 	assert.Contains(t, body, "Powered by")
 }
@@ -133,10 +119,7 @@ func readTerraformOutputs(output string) string {
 	json.Unmarshal([]byte(output), &data)
 
 	cloudfrontURL := data["cloudfront_url"].(string)
-	// next_distribution_arn := data["distribution"].(map[string]interface{})["next_distribution"].(map[string]interface{})["arn"].(string)
-
 	distributionURL := "https://" + cloudfrontURL
-	fmt.Println("Distribution URL:", distributionURL)
 
 	return distributionURL
 }
