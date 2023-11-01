@@ -2,10 +2,14 @@ package test
 
 import (
 	"encoding/json"
+	"image"
+	"io"
 	"net/http"
 	"os"
 	"testing"
 	"time"
+
+	_ "image/png"
 
 	http_helper "github.com/gruntwork-io/terratest/modules/http-helper"
 
@@ -24,7 +28,7 @@ func TestNextServerlessModuleExampleApp(t *testing.T) {
 	terraformOptions := terraform.WithDefaultRetryableErrors(t, &terraform.Options{
 		TerraformDir: basePath + "/terraform/",
 		RetryableTerraformErrors: map[string]string{
-			".*because it is a replicated function. Please see our documentation for Deleting Lambda@Edge Functions and Replicas.*": "Lambda was unable to delete Edge Function",
+			".*because it is a replicated function. Please see our documentation for Deleting Lambda@Edge Functions and Replicas.*": "Lambda was unable to delete Edge Function. It will attempt again to delete it soon.",
 		},
 		MaxRetries:         5,
 		TimeBetweenRetries: 30 * time.Second,
@@ -32,12 +36,12 @@ func TestNextServerlessModuleExampleApp(t *testing.T) {
 		PlanFilePath:       "./tf-plan",
 	})
 
-	defer terraform.Destroy(t, terraformOptions)
-
+	// execute terraform commands
 	terraform.Init(t, terraformOptions)
 	terraform.Validate(t, terraformOptions)
 	terraform.Plan(t, terraformOptions)
 	terraform.Apply(t, terraformOptions)
+	defer terraform.Destroy(t, terraformOptions)
 
 	// export the terraform output
 	output := terraform.OutputJson(t, terraformOptions, "next_serverless")
@@ -69,12 +73,16 @@ func redirectsImages(t *testing.T, distributionURL string, basePath string) {
 	assert.Contains(t, contentType, "image/")
 }
 
-// Tests the status and content type of an optimized image fetched from the distribution.
+// Tests the status, width and content type of an optimized image fetched from the distribution.
 func optimizesImages(t *testing.T, distributionURL string, basePath string) {
 	filenames := getFilenamesFromDirectory(basePath + "/public")
-	status, contentType := customHttpGet(distributionURL + "/_next/image/" + "256/75/webp/" + filenames[0])
+	url := distributionURL + "/_next/image/" + "256/75/png/" + filenames[0]
+
+	status, contentType := customHttpGet(url)
+	width := getWidth(url)
 
 	assert.Equal(t, status, 200)
+	assert.Equal(t, width, 256)
 	assert.Contains(t, contentType, "image/")
 }
 
@@ -153,4 +161,38 @@ func getFilenamesFromDirectory(path string) []string {
 	}
 
 	return filenames
+}
+
+// Downloads an image from a given URL, retrieves its width, and then deletes the downloaded image.
+func getWidth(url string) int {
+	imagePath := "sample.png"
+	downloadImage(url, imagePath)
+	defer deleteImage(imagePath)
+
+	file, _ := os.Open(imagePath)
+	defer file.Close()
+
+	image, _, _ := image.DecodeConfig(file)
+	return image.Width
+}
+
+// Downloads an image from a given URL and saves it to a specified output path.
+func downloadImage(url string, outputPath string) error {
+	response, err := http.Get(url)
+	if err != nil {
+		return err
+	}
+	defer response.Body.Close()
+
+	file, _ := os.Create(outputPath)
+	defer file.Close()
+
+	io.Copy(file, response.Body)
+	return nil
+}
+
+// Deletes a file at the specified `imagePath` location.
+func deleteImage(imagePath string) {
+	os.Remove(imagePath)
+	return
 }
