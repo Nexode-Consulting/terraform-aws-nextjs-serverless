@@ -1,7 +1,9 @@
-# terraform-aws-nextjs-serverless
+# Terraform Next.js module for AWS
+
+Zero-Config Terraform Module to deploy Next.js Apps on AWS using Serverless solutions
 
 
-## Setup
+## Usage
 
 ### Prepare 
 
@@ -63,14 +65,39 @@ module "next_serverless" {
   region          = "eu-central-1" #customize your region
   base_dir        = "./"
 }
+
+output "next_serverless" {
+  value = module.next_serverless
+}
 ```
 
 ### Deployment
 Build the Next.js Code and deploy
 ```bash
+npm i build-serverless-next
 npm run build-serverless-next
+
+terraform init
 terraform apply
 ```
+
+
+## Architecture
+
+### Module 
+![Module ](https://github.com/Nexode-Consulting/terraform-aws-nextjs-serverless/blob/main/visuals/module.webp?raw=true)
+
+### Distribution 
+![Distribution ](https://github.com/Nexode-Consulting/terraform-aws-nextjs-serverless/blob/main/visuals/distribution.webp?raw=true)
+
+### Cache 
+![Cache ](https://github.com/Nexode-Consulting/terraform-aws-nextjs-serverless/blob/main/visuals/cache.webp?raw=true)
+
+
+## Examples
+
+* [Next.js v13](https://github.com/Nexode-Consulting/terraform-aws-nextjs-serverless/tree/main/examples/nextjs-v13)
+  Complete example with SSR, API, static pages, image optimization & custom domain
 
 
 ## Known Issues
@@ -80,13 +107,13 @@ terraform apply
 * When destroying the `next_serverless` module, Lambda@Edge function need at least 15mins to be destroy, since they're [replicated functions](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/lambda-edge-delete-replicas.html)
 
 
-## Visualization
+## Contributing
 
-### Module Diagram
-![Module Diagram](https://github.com/Nexode-Consulting/terraform-aws-nextjs-serverless/blob/main/visuals/module.webp?raw=true)
+Feel free to improve this module. \
+Our [contributing guidelines](https://github.com/Nexode-Consulting/terraform-aws-nextjs-serverless/tree/main/CONTRIBUTING.md) will help you get started.
 
-### Distribution Diagram
-![Distribution Diagram](https://github.com/Nexode-Consulting/terraform-aws-nextjs-serverless/blob/main/visuals/distribution.webp?raw=true)
 
-### Cache Diagram
-![Cache Diagram](https://github.com/Nexode-Consulting/terraform-aws-nextjs-serverless/blob/main/visuals/cache.webp?raw=true)
+## About
+
+This module is maintained by [Nexode Consulting](https://nexode.de/en/). \
+_We help companies develop and operate enterprise-grade software with startup momentum._
