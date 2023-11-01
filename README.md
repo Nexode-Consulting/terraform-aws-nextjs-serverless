@@ -109,11 +109,17 @@ terraform apply
 
 ## Contributing
 
-Feel free to improve this module. \
+Feel free to improve this module.
+<br>
 Our [contributing guidelines](https://github.com/Nexode-Consulting/terraform-aws-nextjs-serverless/tree/main/CONTRIBUTING.md) will help you get started.
 
 
 ## About
 
-This module is maintained by [Nexode Consulting](https://nexode.de/en/). \
+This module is maintained by [Nexode Consulting](https://nexode.de/en/).
+<br>
 _We help companies develop and operate enterprise-grade software with startup momentum._
+
+
+## License
+Apache-2.0 - see [LICENSE](https://github.com/Nexode-Consulting/terraform-aws-nextjs-serverless/tree/main/LICENSE) for details.

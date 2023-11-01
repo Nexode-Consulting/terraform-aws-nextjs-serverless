@@ -1,6 +1,6 @@
 {
   "name": "nextjs",
-  "version": "0.2.8",
+  "version": "0.2.9",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -13,7 +13,7 @@
   },
   "dependencies": {
     "autoprefixer": "^10.4.15",
-    "build-serverless-next": "^0.2.8",
+    "build-serverless-next": "^0.2.9",
     "next": "^13.4.19",
     "react": "18.2.0",
     "react-dom": "18.2.0",

@@ -3,19 +3,19 @@
 ### Feel free to contribute to this module.
 
 As a general advice it is always a good idea to raise an [issue](https://github.com/Nexode-Consulting/terraform-aws-nextjs-serverless/issues) before creating a new pull request.
-
+<br>
 This ensures that we don't have to reject [pull requests](https://github.com/Nexode-Consulting/terraform-aws-nextjs-serverless/pulls) that are not aligning with our roadmap and not wasting your valuable time.
 
 ## Reporting Bugs
 
-If you encounter a bug, please open an [issue](https://github.com/Nexode-Consulting/terraform-aws-nextjs-serverless/issues) on the GitHub repository. 
-
+If you encounter a bug, please open an [issue](https://github.com/Nexode-Consulting/terraform-aws-nextjs-serverless/issues) on the GitHub repository.
+<br>
 Be sure to include as much information as possible to help us understand and reproduce the problem.
 
 ## Feature Requests
 
 If you have an idea for a new feature or enhancement, please feel free to open an [issue](https://github.com/Nexode-Consulting/terraform-aws-nextjs-serverless/issues) and describe it.
-
+<br>
 We'd love to hear your suggestions!
 
 
@@ -60,7 +60,7 @@ Please check our [testing guidelines](https://github.com/Nexode-Consulting/terra
 ```diff
 module "tf_next" {
 - source  = "Nexode-Consulting/nextjs-serverless/aws"
-- version = "0.2.8"
+- version = "0.2.9"
 + source = "../../../"
   ...
 }
