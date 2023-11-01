@@ -22,4 +22,3 @@ terraform {
     encrypt = true
   }
 }
-

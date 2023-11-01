@@ -7,13 +7,22 @@
     "build": "tsc",
     "prepare-lambda": "bash scripts/prepare-lambda.sh"
   },
-  "author": "",
   "license": "ISC",
   "devDependencies": {
     "@types/node": "^20.8.4",
     "ts-node": "^10.9.1",
     "typescript": "^5.2.2"
-  }, "files": [
+  },
+  "files": [
     "source.zip"
-  ]
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://gitlab.com/nexode-consulting/serverless-next-js.git"
+  },
+  "author": "Eleftherios Myriounis",
+  "bugs": {
+    "url": "https://gitlab.com/nexode-consulting/serverless-next-js/issues"
+  },
+  "homepage": "https://gitlab.com/nexode-consulting/serverless-next-js#readme"
 }
