@@ -4,12 +4,16 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+
+
+## [v0.2.11] - 2023-11-03
+
 * Add SSR example [#26](https://github.com/Nexode-Consulting/terraform-aws-nextjs-serverless/pull/26)
 * Add CHANGELOG docs [#30](https://github.com/Nexode-Consulting/terraform-aws-nextjs-serverless/pull/30)
+* Fix: Set a version for every package used by `build-serverless-next` [#31](https://github.com/Nexode-Consulting/terraform-aws-nextjs-serverless/pull/31)
 
 
-
-## [v0.2.10] - 2023-10-26
+## [v0.2.10] - 2023-11-01
 
 * Add License for the module [#23](https://github.com/Nexode-Consulting/terraform-aws-nextjs-serverless/pull/23)
 * Add License for the modulethe packages [#24](https://github.com/Nexode-Consulting/terraform-aws-nextjs-serverless/pull/24)
