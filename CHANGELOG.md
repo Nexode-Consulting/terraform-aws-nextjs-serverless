@@ -5,6 +5,11 @@ All notable changes to this project will be documented in this file.
 ## [Unreleased]
 
 
+## [v0.2.13] - 2023-11-03
+
+* Add docs about dependancies [#33](https://github.com/Nexode-Consulting/terraform-aws-nextjs-serverless/pull/33)
+* Bugfix: Image redirection had issues with deeply nested files [#34](https://github.com/Nexode-Consulting/terraform-aws-nextjs-serverless/pull/34)
+
 
 ## [v0.2.11] - 2023-11-03
 

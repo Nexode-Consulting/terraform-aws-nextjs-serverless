@@ -6,7 +6,7 @@ rm -r standalone
 rm -r deployments
 
 # Install necessary packages
-npm i -D serverless@3.36.0 serverless-esbuild@1.48.5 esbuild@0.19.5 serverless-http@3.2.0 nextjs-image-optimization@0.2.12 image-redirection@0.2.12
+npm i -D serverless@3.36.0 serverless-esbuild@1.48.5 esbuild@0.19.5 serverless-http@3.2.0 nextjs-image-optimization@0.2.13 image-redirection@0.2.13
 
 # Inject code in build, and cleanup
 cp -a ./app ./app-backup
