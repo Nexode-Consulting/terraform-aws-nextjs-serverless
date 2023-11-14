@@ -5,6 +5,14 @@ Zero-Config Terraform Module to deploy Next.js Apps on AWS using Serverless solu
 
 ## Usage
 
+### Dependencies
+
+* Node: 16+
+* Terraform: 1.6.3+
+* bash
+* zip
+
+
 ### Prepare 
 
 Add the following dependencies & script to your _package.json_ file
@@ -44,7 +52,9 @@ module.exports = nextConfig
 
 ### Create Terraform deployment
 
-Ensure that the deployment name is unique since its used for creating s3 buckets.
+Check it on [Terraform Registry](https://registry.terraform.io/modules/Nexode-Consulting/nextjs-serverless) for more details.
+
+_Ensure that the deployment name is unique since its used for creating s3 buckets._
 
 ```
 main.tf
@@ -61,9 +71,9 @@ provider "aws" {
 module "next_serverless" {
   source  = "Nexode-Consulting/nextjs-serverless/aws"
 
-  deployment_name = "nextjs-serverless" #needs to be unique since it will create an s3 bucket
+  deployment_name = "nextjs-serverless" #needs to be unique since it will create s3 buckets
   region          = "eu-central-1" #customize your region
-  base_dir        = "./"
+  base_dir        = "./" #The base directory of the next.js app
 }
 
 output "next_serverless" {
