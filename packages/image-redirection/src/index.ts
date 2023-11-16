@@ -117,6 +117,7 @@ export const handler = async (event: any, _context: any, callback: any) => {
     ]
       .join('/')
       .replace(/%2F/g, '/')
+      .replace('/assets', '')
 
     return redirectTo(redirectToUrl, callback)
   } catch (error) {

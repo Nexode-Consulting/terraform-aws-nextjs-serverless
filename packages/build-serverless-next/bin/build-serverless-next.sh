@@ -51,13 +51,26 @@ cp node_modules/nextjs-image-optimization/source.zip deployments/image-optimizat
 cd standalone
 mkdir -p static/_next
 cp -a .next/static static/_next
-# mkdir public/assets
-# cp -a public/* public/assets
 
-# Zip source code
+# Prepare source code
 rm -r node_modules
-find . -name '*.html' -exec sed -i.backup 's|src="/|src="/assets/|g' '{}' \; 
-find . -name '*.html' -exec sed -i.backup 's|src="/assets/_next/|src="/_next/|g' '{}' \; 
+# update code to support public assets prefix
+find . -name '*.html' -exec sed -i.backup 's|src="/|src="/assets/|g' '{}' \;
+find . -name '*.html' -exec sed -i.backup 's|src="/assets/_next/|src="/_next/|g' '{}' \;
+find . -name '*.html' -exec sed -i.backup 's|src:"/|src:"/assets/|g' '{}' \;
+find . -name '*.html' -exec sed -i.backup 's|src:"/assets/_next/|src:"/_next/|g' '{}' \;
+find . -name '*.html' -exec sed -i.backup 's|image?url=%2Fassets%2F|image?url=%2F|g' '{}' \;
+find . -name '*.html' -exec sed -i.backup 's|url(/|url(/assets/|g' '{}' \;
+find . -name '*.css' -exec sed -i.backup 's|url\\(\\/|url\\(\\/assets\\/|g' '{}' \;
+find . -name '*.css' -exec sed -i.backup 's|url(/|url(/assets/|g' '{}' \;
+find . -name '*.js' -exec sed -i.backup 's|src="/|src="/assets/|g' '{}' \;
+find . -name '*.js' -exec sed -i.backup 's|src="/assets/_next/|src="/_next/|g' '{}' \;
+find . -name '*.js' -exec sed -i.backup 's|src:"/|src:"/assets/|g' '{}' \;
+find . -name '*.js' -exec sed -i.backup 's|src:"/assets/_next/|src:"/_next/|g' '{}' \;
+find . -name '*.js' -exec sed -i.backup 's|image?url=%2Fassets%2F|image?url=%2F|g' '{}' \;
+find . -name '*.js' -exec sed -i.backup 's|url(/|url(/assets/|g' '{}' \;
+find . -type f -name '*.backup' -exec rm {} +
+# zip source code
 zip -r ../deployments/source.zip * .[!.]*
 cd ..
 
