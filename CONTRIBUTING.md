@@ -60,7 +60,7 @@ Please check our [testing guidelines](https://github.com/Nexode-Consulting/terra
 ```diff
 module "tf_next" {
 - source  = "Nexode-Consulting/nextjs-serverless/aws"
-- version = "0.2.13"
+- version = "0.2.14"
 + source = "../../../"
   ...
 }

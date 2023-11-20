@@ -1,6 +1,6 @@
 {
   "name": "nextjs-image-optimization",
-  "version": "0.2.13",
+  "version": "0.2.14",
   "description": "Image Optimization Lambda",
   "main": "index.js",
   "scripts": {

@@ -115,7 +115,8 @@ terraform apply
 * The `build-serverless-next` _package's version_ must match the `next_serverless` _module's version_
 * The `app/` folder must be in the root directory (ex. not in the `src/` directory)
 * When destroying the `next_serverless` module, Lambda@Edge function need at least 15mins to be destroy, since they're [replicated functions](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/lambda-edge-delete-replicas.html)
-* Using the `<img>` tag or `background-image` css property will face issues rendering images, please use the build-in `<Image />` [component](https://nextjs.org/docs/pages/api-reference/components/image).
+* Using the `<img>` tag or `background-image` css property might face issues rendering images, please use the build-in `<Image />` [component](https://nextjs.org/docs/pages/api-reference/components/image).
+* Packages imported in `.js` files, are ignored by the build. We recommend to switch to Typescript.
 
 
 ## Contributing

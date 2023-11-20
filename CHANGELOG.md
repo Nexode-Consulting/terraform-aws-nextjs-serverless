@@ -4,8 +4,12 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+## [v0.2.14] - 2023-11-17
 
-## [v0.2.13] - 2023-11-03
+* Bugfix: next_lambda_layer was not updating
+
+
+## [v0.2.13] - 2023-11-16
 
 * Add docs about dependancies [#33](https://github.com/Nexode-Consulting/terraform-aws-nextjs-serverless/pull/33)
 * Bugfix: Image redirection had issues with deeply nested files [#34](https://github.com/Nexode-Consulting/terraform-aws-nextjs-serverless/pull/34)

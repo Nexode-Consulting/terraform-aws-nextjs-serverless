@@ -2,6 +2,10 @@
 ########### next_lambda ############
 ####################################
 
+locals {
+  lambda_layer_object_s3_key = "${filemd5("${var.base_dir}deployments/layer.zip")}-layer.zip"
+}
+
 module "next_lambda_layers_bucket" {
   source  = "terraform-aws-modules/s3-bucket/aws"
   version = "3.15.1"
@@ -20,7 +24,7 @@ module "next_lambda_layers_bucket" {
 
 resource "aws_s3_object" "lambda_layer_object" {
   bucket = module.next_lambda_layers_bucket.s3_bucket_id
-  key    = "layer.zip"
+  key    = local.lambda_layer_object_s3_key
   source = "${var.base_dir}deployments/layer.zip"
 }
 
@@ -31,7 +35,7 @@ resource "aws_lambda_layer_version" "server_layer" {
   compatible_runtimes = [var.runtime]
 
   s3_bucket = module.next_lambda_layers_bucket.s3_bucket_id
-  s3_key    = "layer.zip"
+  s3_key    = local.lambda_layer_object_s3_key
 }
 
 module "next_lambda" {
