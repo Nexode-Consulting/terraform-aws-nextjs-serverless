@@ -4,6 +4,7 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+
 ## [v0.2.15] - 2023-11-20
 
 * Bugfix: next_lambda_layer was not updating [#35](https://github.com/Nexode-Consulting/terraform-aws-nextjs-serverless/pull/35)
