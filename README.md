@@ -116,7 +116,7 @@ terraform apply
 * The `app/` folder must be in the root directory (ex. not in the `src/` directory)
 * When destroying the `next_serverless` module, Lambda@Edge function need at least 15mins to be destroy, since they're [replicated functions](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/lambda-edge-delete-replicas.html)
 * Using the `<img>` tag or `background-image` css property might face issues rendering images, please use the build-in `<Image />` [component](https://nextjs.org/docs/pages/api-reference/components/image). Meanwhile, please move all images, icons, etc... in the `public` folder.
-* In some rare cases, some modules can not be imported by next_lambda (for unknown reasons). To solve this issue use `node_modules/build-serverless-next/bin/build-serverless-next.sh --packages-to-copy=package_1,package_2,package_3` instead of `npm run dev`
+* In some rare cases, some modules can not be imported by next_lambda (for unknown reasons). To solve this issue use `node_modules/build-serverless-next/bin/build-serverless-next.sh --packages-to-copy=package_1,package_2,package_3` instead of `npm run build-serverless-next`
 
 
 ## Contributing

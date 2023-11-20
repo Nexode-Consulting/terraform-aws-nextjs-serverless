@@ -4,9 +4,10 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
-## [v0.2.14] - 2023-11-17
+## [v0.2.15] - 2023-11-20
 
-* Bugfix: next_lambda_layer was not updating
+* Bugfix: next_lambda_layer was not updating [#35](https://github.com/Nexode-Consulting/terraform-aws-nextjs-serverless/pull/35)
+* `build-serverless-next`: Option to copy some packages directly into the next_lambda, since in some rare cases import from the layer fails [#36](https://github.com/Nexode-Consulting/terraform-aws-nextjs-serverless/pull/36)
 
 
 ## [v0.2.13] - 2023-11-16
