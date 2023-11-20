@@ -6,4 +6,5 @@ module "next_serverless" {
   deployment_name = var.deployment_name
   region          = var.region
   base_dir        = "../"
+  runtime         = "nodejs18.x"
 }
