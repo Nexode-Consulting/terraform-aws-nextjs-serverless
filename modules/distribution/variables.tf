@@ -23,6 +23,10 @@ variable "image_redirection_qualified_arn" {
   type = string
 }
 
+variable "lambda_forwarder_qualified_arn" {
+  type = string
+}
+
 variable "static_assets_bucket" {
   type = map(any)
 }
@@ -41,4 +45,8 @@ variable "public_assets_bucket_region" {
 
 variable "public_assets_origin_id" {
   type = map(any)
+}
+
+variable "server_asssets_bucket_domain" {
+  type = string
 }
