@@ -42,13 +42,11 @@ const Home: NextPage = () => {
           </a>
 
           <a
-            href='https://vercel.com/new?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app'
+            href='https://registry.terraform.io/modules/Nexode-Consulting/nextjs-serverless'
             className={styles.card}
           >
             <h2>Deploy &rarr;</h2>
-            <p>
-              Instantly deploy your Next.js site to a public URL with Vercel.
-            </p>
+            <p>Zero-Config Terraform Module to deploy Next.js Apps on AWS</p>
           </a>
         </div>
       </main>
