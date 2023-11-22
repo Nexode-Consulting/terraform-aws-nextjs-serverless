@@ -3,14 +3,15 @@
 ####################################
 
 locals {
-  lambda_layer_object_s3_key = "${filemd5("${var.base_dir}deployments/layer.zip")}-layer.zip"
+  lambda_source_object_s3_key = "source-${filemd5("${var.base_dir}deployments/source.zip")}.zip"
+  lambda_layer_object_s3_key = "layer-${filemd5("${var.base_dir}deployments/layer.zip")}.zip"
 }
 
-module "next_lambda_layers_bucket" {
+module "next_lambda_zips_bucket" {
   source  = "terraform-aws-modules/s3-bucket/aws"
   version = "3.15.1"
 
-  bucket                   = "${var.deployment_name}-next-lambda-layers"
+  bucket                   = "${var.deployment_name}-next-lambda-zips"
   acl                      = "private"
   force_destroy            = true
   control_object_ownership = true
@@ -22,8 +23,14 @@ module "next_lambda_layers_bucket" {
   restrict_public_buckets = true
 }
 
+resource "aws_s3_object" "lambda_source_object" {
+  bucket = module.next_lambda_zips_bucket.s3_bucket_id
+  key    = local.lambda_source_object_s3_key
+  source = "${var.base_dir}deployments/source.zip"
+}
+
 resource "aws_s3_object" "lambda_layer_object" {
-  bucket = module.next_lambda_layers_bucket.s3_bucket_id
+  bucket = module.next_lambda_zips_bucket.s3_bucket_id
   key    = local.lambda_layer_object_s3_key
   source = "${var.base_dir}deployments/layer.zip"
 }
@@ -34,7 +41,7 @@ resource "aws_lambda_layer_version" "server_layer" {
   layer_name          = "${var.deployment_name}-layer"
   compatible_runtimes = [var.runtime]
 
-  s3_bucket = module.next_lambda_layers_bucket.s3_bucket_id
+  s3_bucket = module.next_lambda_zips_bucket.s3_bucket_id
   s3_key    = local.lambda_layer_object_s3_key
 }
 
@@ -54,8 +61,11 @@ module "next_lambda" {
   maximum_retry_attempts       = 0
 
   create_package         = false
-  local_existing_package = "${var.base_dir}deployments/source.zip"
   handler                = "server.handler"
+  s3_existing_package    = {
+    bucket = module.next_lambda_zips_bucket.s3_bucket_id
+    key    = local.lambda_source_object_s3_key
+  }
 
   publish = true
   layers  = [aws_lambda_layer_version.server_layer.arn]
