@@ -1,18 +1,32 @@
 #!/bin/bash
 
+
+# List of packages to copy directly on the lambda, instead of the layer
+for ARGUMENT in "$@"
+do
+  KEY=$(echo $ARGUMENT | cut -f1 -d=)
+
+  if [[ $KEY == --packages-to-copy* ]]; then
+    KEY_LENGTH=${#KEY}
+    VALUE="${ARGUMENT:$KEY_LENGTH+1}"
+
+    IFS=',' read -r -a packages_to_copy <<< "$VALUE"
+  fi
+done
+
 # Clean-up old builds
 rm -r .next
 rm -r standalone
 rm -r deployments
 
 # Install necessary packages
-npm i -D serverless serverless-esbuild esbuild serverless-http nextjs-image-optimization image-redirection
+npm i -D serverless@3.36.0 serverless-esbuild@1.48.5 esbuild@0.19.5 serverless-http@3.2.0 nextjs-image-optimization@0.2.16 image-redirection@0.2.16
 
 # Inject code in build, and cleanup
 cp -a ./app ./app-backup
 find ./app -type f -name 'page.tsx' -exec sh -c 'printf "\nexport const runtime = '\''edge'\'';\n" >> "$0"' {} \;
 set -e
-next build
+npm run build
 set +e
 rm -r ./app
 mv ./app-backup ./app
@@ -51,13 +65,38 @@ cp node_modules/nextjs-image-optimization/source.zip deployments/image-optimizat
 cd standalone
 mkdir -p static/_next
 cp -a .next/static static/_next
-# mkdir public/assets
-# cp -a public/* public/assets
 
-# Zip source code
+# Prepare source code
 rm -r node_modules
-find . -name '*.html' -exec sed -i.backup 's|src="/|src="/assets/|g' '{}' \; 
-find . -name '*.html' -exec sed -i.backup 's|src="/assets/_next/|src="/_next/|g' '{}' \; 
+# update code to support public assets prefix
+find . -name '*.html' -exec sed -i.backup 's|src="/|src="/assets/|g' '{}' \;
+find . -name '*.html' -exec sed -i.backup 's|src="/assets/_next/|src="/_next/|g' '{}' \;
+find . -name '*.html' -exec sed -i.backup 's|href="/|href="/assets/|g' '{}' \;
+find . -name '*.html' -exec sed -i.backup 's|href="/assets/_next/|href="/_next/|g' '{}' \;
+find . -name '*.html' -exec sed -i.backup 's|src:"/|src:"/assets/|g' '{}' \;
+find . -name '*.html' -exec sed -i.backup 's|src:"/assets/_next/|src:"/_next/|g' '{}' \;
+find . -name '*.html' -exec sed -i.backup 's|image?url=%2Fassets%2F|image?url=%2F|g' '{}' \;
+find . -name '*.html' -exec sed -i.backup 's|url(/|url(/assets/|g' '{}' \;
+find . -name '*.css' -exec sed -i.backup 's|url\\(\\/|url\\(\\/assets\\/|g' '{}' \;
+find . -name '*.css' -exec sed -i.backup 's|url\\(\\/assets\\/_next|url\\(\\/_next|g' '{}' \;
+find . -name '*.css' -exec sed -i.backup 's|url(/|url(/assets/|g' '{}' \;
+find . -name '*.css' -exec sed -i.backup 's|url(/assets/_next|url(/_next|g' '{}' \;
+find . -name '*.js' -exec sed -i.backup 's|src="/|src="/assets/|g' '{}' \;
+find . -name '*.js' -exec sed -i.backup 's|src="/assets/_next/|src="/_next/|g' '{}' \;
+find . -name '*.js' -exec sed -i.backup 's|href="/|href="/assets/|g' '{}' \;
+find . -name '*.js' -exec sed -i.backup 's|href="/assets/_next/|href="/_next/|g' '{}' \;
+find . -name '*.js' -exec sed -i.backup 's|src:"/|src:"/assets/|g' '{}' \;
+find . -name '*.js' -exec sed -i.backup 's|src:"/assets/_next/|src:"/_next/|g' '{}' \;
+find . -name '*.js' -exec sed -i.backup 's|image?url=%2Fassets%2F|image?url=%2F|g' '{}' \;
+find . -name '*.js' -exec sed -i.backup 's|url(/|url(/assets/|g' '{}' \;
+find . -type f -name '*.backup' -exec rm {} +
+# optinal: add node_modules
+mkdir node_modules
+for package in "${packages_to_copy[@]}"
+do
+  cp -a ../node_modules/$package node_modules/$package
+done
+# zip source code
 zip -r ../deployments/source.zip * .[!.]*
 cd ..
 

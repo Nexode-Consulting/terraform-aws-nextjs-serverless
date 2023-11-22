@@ -1,13 +1,13 @@
 {
   "name": "nextjs-image-optimization",
-  "version": "0.2.7",
+  "version": "0.2.16",
   "description": "Image Optimization Lambda",
   "main": "index.js",
   "scripts": {
     "build": "tsc",
     "prepare-lambda": "bash scripts/prepare-lambda.sh"
   },
-  "license": "ISC",
+  "license": "Apache-2.0",
   "devDependencies": {
     "@types/node": "^20.8.4",
     "ts-node": "^10.9.1",

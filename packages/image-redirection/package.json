@@ -1,18 +1,19 @@
 {
   "name": "image-redirection",
-  "version": "0.2.7",
+  "version": "0.2.16",
   "description": "Image Redirection Lambda",
   "main": "index.js",
   "scripts": {
     "build": "tsc",
     "prepare-lambda": "bash scripts/prepare-lambda.sh"
   },
-  "license": "ISC",
+  "license": "Apache-2.0",
   "devDependencies": {
     "@types/node": "^20.8.4",
     "ts-node": "^10.9.1",
     "typescript": "^5.2.2"
-  }, "files": [
+  },
+  "files": [
     "source.zip"
   ],
   "repository": {
