@@ -114,7 +114,10 @@ export const handler = async (event: any, _context: any, callback: any) => {
       query?.q,
       requestType.replace('image/', ''),
       query?.url.replace('%2F', ''),
-    ].join('/')
+    ]
+      .join('/')
+      .replace(/%2F/g, '/')
+      .replace('/assets', '')
 
     return redirectTo(redirectToUrl, callback)
   } catch (error) {

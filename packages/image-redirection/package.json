@@ -1,6 +1,6 @@
 {
   "name": "image-redirection",
-  "version": "0.2.12",
+  "version": "0.2.16",
   "description": "Image Redirection Lambda",
   "main": "index.js",
   "scripts": {
