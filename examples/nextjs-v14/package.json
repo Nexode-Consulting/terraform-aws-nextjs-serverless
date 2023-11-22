@@ -10,7 +10,7 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "build-serverless-next": "^0.2.14",
+    "build-serverless-next": "^0.2.16",
     "next": "14.0.3",
     "react": "^18",
     "react-dom": "^18"
