@@ -1,6 +1,6 @@
 variable "deployment_name" {
   type    = string
-  default = "next-v14-serverless"
+  default = "example-next-serverless"
 }
 
 variable "region" {
