@@ -42,3 +42,15 @@ variable "public_assets_bucket_region" {
 variable "public_assets_origin_id" {
   type = map(any)
 }
+
+variable "cloudfront_cache_default_ttl" {
+  type = number
+}
+
+variable "cloudfront_cache_max_ttl" {
+  type = number
+}
+
+variable "cloudfront_cache_min_ttl" {
+  type = number
+}

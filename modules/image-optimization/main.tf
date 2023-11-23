@@ -20,9 +20,9 @@ module "image_optimization" {
 
   lambda_at_edge               = true
   publish                      = true
-  runtime                      = var.runtime
+  runtime                      = var.image_optimization_runtime
   memory_size                  = var.image_optimization_lambda_memory_size
-  ephemeral_storage_size       = 512
+  ephemeral_storage_size       = var.image_optimization_ephemeral_storage_size
   timeout                      = 30
   maximum_event_age_in_seconds = 60
   maximum_retry_attempts       = 0
@@ -32,7 +32,7 @@ module "image_optimization" {
   handler                = "index.handler"
 
   attach_network_policy             = false
-  cloudwatch_logs_retention_in_days = var.logs_retention
+  cloudwatch_logs_retention_in_days = var.image_optimization_logs_retention
 
   cors = {
     allow_credentials = true
@@ -67,7 +67,7 @@ module "image_redirection" {
 
   lambda_at_edge               = true
   publish                      = true
-  runtime                      = var.runtime
+  runtime                      = var.image_optimization_runtime
   memory_size                  = 128
   ephemeral_storage_size       = 512
   timeout                      = 5
@@ -79,7 +79,7 @@ module "image_redirection" {
   handler                = "index.handler"
 
   attach_network_policy             = false
-  cloudwatch_logs_retention_in_days = var.logs_retention
+  cloudwatch_logs_retention_in_days = var.image_optimization_logs_retention
 
   cors = {
     allow_credentials = true

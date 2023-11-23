@@ -4,7 +4,7 @@
 
 locals {
   lambda_source_object_s3_key = "source-${filemd5("${var.base_dir}deployments/source.zip")}.zip"
-  lambda_layer_object_s3_key = "layer-${filemd5("${var.base_dir}deployments/layer.zip")}.zip"
+  lambda_layer_object_s3_key  = "layer-${filemd5("${var.base_dir}deployments/layer.zip")}.zip"
 }
 
 module "next_lambda_zips_bucket" {
@@ -39,7 +39,7 @@ resource "aws_lambda_layer_version" "server_layer" {
   depends_on = [aws_s3_object.lambda_layer_object]
 
   layer_name          = "${var.deployment_name}-layer"
-  compatible_runtimes = [var.runtime]
+  compatible_runtimes = [var.next_lambda_runtime]
 
   s3_bucket = module.next_lambda_zips_bucket.s3_bucket_id
   s3_key    = local.lambda_layer_object_s3_key
@@ -53,16 +53,16 @@ module "next_lambda" {
   description   = "${var.deployment_name} Server"
 
   lambda_at_edge               = false
-  runtime                      = var.runtime
-  memory_size                  = var.lambda_memory_size
-  ephemeral_storage_size       = 512
+  runtime                      = var.next_lambda_runtime
+  memory_size                  = var.next_lambda_memory_size
+  ephemeral_storage_size       = var.next_lambda_ephemeral_storage_size
   timeout                      = 30
   maximum_event_age_in_seconds = 60
   maximum_retry_attempts       = 0
 
-  create_package         = false
-  handler                = "server.handler"
-  s3_existing_package    = {
+  create_package = false
+  handler        = "server.handler"
+  s3_existing_package = {
     bucket = module.next_lambda_zips_bucket.s3_bucket_id
     key    = local.lambda_source_object_s3_key
   }
@@ -70,7 +70,7 @@ module "next_lambda" {
   publish = true
   layers  = [aws_lambda_layer_version.server_layer.arn]
 
-  cloudwatch_logs_retention_in_days = var.logs_retention
+  cloudwatch_logs_retention_in_days = var.next_lambda_logs_retention
 
   attach_network_policy = false
 
@@ -103,7 +103,7 @@ module "api_gateway_cloudwatch_log_group" {
   version = "4.3.0"
 
   name              = "${var.deployment_name}-api-gateway-logs"
-  retention_in_days = var.logs_retention
+  retention_in_days = var.next_lambda_logs_retention
 }
 
 module "api_gateway" {
@@ -117,7 +117,7 @@ module "api_gateway" {
   create_api_domain_name = false
 
   default_stage_access_log_destination_arn = module.api_gateway_cloudwatch_log_group.cloudwatch_log_group_arn
-  default_stage_access_log_format          = "sourceIp: $context.identity.sourceIp, $context.domainName $context.requestTime \"$context.httpMethod $context.path $context.routeKey $context.protocol\" path: $context.customDomain.basePathMatched resp_status: $context.status integrationLatency: $context.integrationLatency responseLatency: $context.responseLatency requestId: $context.requestId Error: $context.integrationErrorMessage rawRequestPayloadSize: $input.body.size() rawRequestPayload: $input.body" # https://docs.aws.amazon.com/apigateway/latest/developerguide/http-api-logging-variables.html
+  default_stage_access_log_format          = var.api_gateway_log_format
 
   cors_configuration = {
     allow_headers = ["*"]
