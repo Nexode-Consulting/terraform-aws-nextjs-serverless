@@ -12,6 +12,7 @@ Updates:
 * store next_lambda source zip in s3 [#38](https://github.com/Nexode-Consulting/terraform-aws-nextjs-serverless/pull/38)
 * expand image examples [#39](https://github.com/Nexode-Consulting/terraform-aws-nextjs-serverless/pull/39)
 * update cache diagram [#37](https://github.com/Nexode-Consulting/terraform-aws-nextjs-serverless/pull/37)
+* update dependencies versions to latest [#43](https://github.com/Nexode-Consulting/terraform-aws-nextjs-serverless/pull/43)
 
 **Breaking Changes**
 * `lambda_memory_size` is replaced by `next_lambda_memory_size` & `image_optimization_lambda_memory_size`
