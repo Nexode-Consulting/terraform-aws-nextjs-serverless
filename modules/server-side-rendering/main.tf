@@ -47,7 +47,7 @@ resource "aws_lambda_layer_version" "server_layer" {
 
 module "next_lambda" {
   source  = "terraform-aws-modules/lambda/aws"
-  version = "6.0.0"
+  version = "6.5.0"
 
   function_name = "${var.deployment_name}-server-lambda"
   description   = "${var.deployment_name} Server"

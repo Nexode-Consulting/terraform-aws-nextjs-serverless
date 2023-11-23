@@ -13,7 +13,7 @@ module "image_optimization" {
   }
 
   source  = "terraform-aws-modules/lambda/aws"
-  version = "6.0.1"
+  version = "6.5.0"
 
   function_name = "${var.deployment_name}-image-optimization"
   description   = "${var.deployment_name} Image Optimization"
@@ -60,7 +60,7 @@ module "image_redirection" {
   }
 
   source  = "terraform-aws-modules/lambda/aws"
-  version = "6.0.1"
+  version = "6.5.0"
 
   function_name = "${var.deployment_name}-image-redirection"
   description   = "${var.deployment_name} Image Redirection"
