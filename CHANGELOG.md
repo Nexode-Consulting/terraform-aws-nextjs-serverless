@@ -2,7 +2,21 @@
 
 All notable changes to this project will be documented in this file.
 
-## [Unreleased]
+<!-- ## [Unreleased] -->
+
+
+## [v0.2.17] - 2023-11-23
+
+Updates:
+* add & update customization options of the module through terraform variables [#42](https://github.com/Nexode-Consulting/terraform-aws-nextjs-serverless/pull/42)
+* store next_lambda source zip in s3 [#38](https://github.com/Nexode-Consulting/terraform-aws-nextjs-serverless/pull/38)
+* expand image examples [#39](https://github.com/Nexode-Consulting/terraform-aws-nextjs-serverless/pull/39)
+* update cache diagram [#37](https://github.com/Nexode-Consulting/terraform-aws-nextjs-serverless/pull/37)
+
+**Breaking Changes**
+* `lambda_memory_size` is replaced by `next_lambda_memory_size` & `image_optimization_lambda_memory_size`
+* `runtime` is replaced by `next_lambda_runtime` & `image_optimization_runtime`
+* `logs_retention` is replaced by `next_lambda_logs_retention` & `image_optimization_logs_retention`
 
 
 ## [v0.2.16] - 2023-11-20
@@ -25,6 +39,8 @@ All notable changes to this project will be documented in this file.
 
 
 ## [v0.2.10] - 2023-11-01
+
+**Add License**
 
 * Add License for the module [#23](https://github.com/Nexode-Consulting/terraform-aws-nextjs-serverless/pull/23)
 * Add License for the modulethe packages [#24](https://github.com/Nexode-Consulting/terraform-aws-nextjs-serverless/pull/24)
