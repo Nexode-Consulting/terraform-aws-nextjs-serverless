@@ -9,14 +9,14 @@ module "lambda_forwarder" {
   }
 
   source  = "terraform-aws-modules/lambda/aws"
-  version = "6.0.1"
+  version = "6.5.0"
 
   function_name = "${var.deployment_name}-lambda-forwarder"
   description   = "${var.deployment_name} Lambda Forwarder"
 
   lambda_at_edge               = true
   publish                      = true
-  runtime                      = "python3.10"
+  runtime                      = var.lambda_forwarder_runtime
   memory_size                  = 128
   ephemeral_storage_size       = 512
   timeout                      = 10
@@ -28,7 +28,7 @@ module "lambda_forwarder" {
   handler                = "main.lambda_handler"
 
   attach_network_policy             = false
-  cloudwatch_logs_retention_in_days = var.logs_retention
+  cloudwatch_logs_retention_in_days = var.lambda_forwarder_logs_retention
 
   cors = {
     allow_credentials = true

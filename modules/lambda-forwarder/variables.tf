@@ -6,10 +6,10 @@ variable "base_dir" {
   type = string
 }
 
-variable "runtime" {
+variable "lambda_forwarder_runtime" {
   type = string
 }
 
-variable "logs_retention" {
+variable "lambda_forwarder_logs_retention" {
   type = number
 }

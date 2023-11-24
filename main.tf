@@ -42,8 +42,8 @@ module "lambda-forwarder" {
   deployment_name = var.deployment_name
   base_dir        = var.base_dir
 
-  runtime        = var.runtime
-  logs_retention = var.logs_retention
+  lambda_forwarder_runtime        = var.lambda_forwarder_runtime
+  lambda_forwarder_logs_retention = var.lambda_forwarder_logs_retention
 }
 
 module "image-optimization" {
