@@ -1,8 +1,8 @@
-variable "runtime" {
+variable "image_optimization_runtime" {
   type = string
 }
 
-variable "logs_retention" {
+variable "image_optimization_logs_retention" {
   type = number
 }
 
@@ -19,5 +19,9 @@ variable "public_assets_bucket" {
 }
 
 variable "image_optimization_lambda_memory_size" {
+  type = number
+}
+
+variable "image_optimization_ephemeral_storage_size" {
   type = number
 }

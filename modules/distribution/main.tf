@@ -113,9 +113,9 @@ resource "aws_cloudfront_distribution" "next_distribution" {
       }
     }
 
-    default_ttl = 600
-    max_ttl     = 2592000
-    min_ttl     = 0
+    default_ttl = var.cloudfront_cache_default_ttl
+    max_ttl     = var.cloudfront_cache_max_ttl
+    min_ttl     = var.cloudfront_cache_min_ttl
 
     viewer_protocol_policy = "redirect-to-https"
     compress               = true
@@ -141,9 +141,9 @@ resource "aws_cloudfront_distribution" "next_distribution" {
       }
     }
 
-    default_ttl = 600
-    max_ttl     = 2592000
-    min_ttl     = 0
+    default_ttl = var.cloudfront_cache_default_ttl
+    max_ttl     = var.cloudfront_cache_max_ttl
+    min_ttl     = var.cloudfront_cache_min_ttl
 
     viewer_protocol_policy = "redirect-to-https"
     compress               = true
@@ -163,9 +163,9 @@ resource "aws_cloudfront_distribution" "next_distribution" {
       }
     }
 
-    default_ttl = 600
-    max_ttl     = 2592000
-    min_ttl     = 0
+    default_ttl = var.cloudfront_cache_default_ttl
+    max_ttl     = var.cloudfront_cache_max_ttl
+    min_ttl     = var.cloudfront_cache_min_ttl
 
     viewer_protocol_policy = "redirect-to-https"
     compress               = true
@@ -185,9 +185,9 @@ resource "aws_cloudfront_distribution" "next_distribution" {
       }
     }
 
-    default_ttl = 600
-    max_ttl     = 2592000
-    min_ttl     = 0
+    default_ttl = var.cloudfront_cache_default_ttl
+    max_ttl     = var.cloudfront_cache_max_ttl
+    min_ttl     = var.cloudfront_cache_min_ttl
 
     viewer_protocol_policy = "redirect-to-https"
     compress               = true

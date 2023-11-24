@@ -50,3 +50,15 @@ variable "public_assets_origin_id" {
 variable "server_asssets_bucket_domain" {
   type = string
 }
+
+variable "cloudfront_cache_default_ttl" {
+  type = number
+}
+
+variable "cloudfront_cache_max_ttl" {
+  type = number
+}
+
+variable "cloudfront_cache_min_ttl" {
+  type = number
+}

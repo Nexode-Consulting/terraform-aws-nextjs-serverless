@@ -1,7 +1,7 @@
 module "next_serverless" {
   source = "../../../"
   # source  = "Nexode-Consulting/nextjs-serverless/aws"
-  # version = "0.2.16"
+  # version = "0.2.17"
 
   deployment_name = var.deployment_name
   region          = var.region
