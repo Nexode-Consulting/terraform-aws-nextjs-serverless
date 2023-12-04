@@ -53,7 +53,7 @@ const Home: NextPage = () => {
       </div>
       <div style={{ border: '1px solid black', margin: '5px', padding: '5px' }}>
         <span>img component</span>
-        <img src='/images/sample.png' width={500} height={325} />
+        <img src='/images/sample.png' alt='sample image' width={500} height={325} />
       </div>
       <div style={{ border: '1px solid black', margin: '5px', padding: '5px' }}>
         <span>bg-img (css)</span>

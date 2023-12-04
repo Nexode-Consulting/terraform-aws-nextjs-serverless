@@ -9,6 +9,10 @@ module "next_serverless" {
 
   cloudfront_acm_certificate_arn = (var.deployment_domain != null) ? module.next_cloudfront_certificate[0].acm_certificate_arn : null
   cloudfront_aliases             = (var.deployment_domain != null) ? [var.deployment_domain] : []
+
+  next_lambda_env_vars = {
+    NODE_ENV = "production"
+  }
 }
 
 module "next_cloudfront_certificate" {
