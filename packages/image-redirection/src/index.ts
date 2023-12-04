@@ -79,6 +79,24 @@ export const handler = async (event: any, _context: any, callback: any) => {
         {}
       )
 
+    // Return original image if it's remote image
+    if (/^(http|https)%3A%2F%2F/.test(query?.url)) {
+      /* The URL for the original image. */
+      const imageUrl = query?.url.replace(/%3A/g, ':').replace(/%2F/g, '/')
+      console.log({ imageUrl });
+      return redirectTo(imageUrl, callback)
+    }
+
+    // Return original image if it's static image
+    if (/_next/.test(query?.url)) {
+      /* The URL for the original image. */
+      const imageUrl =
+        'https://' +
+        config?.distributionDomainName +
+        query?.url.replace(/%2F/g, '/')
+      return redirectTo(imageUrl, callback)
+    }
+
     // Return original image if it's image/gif or image/svg+xml
     const regex = /\.(gif|svg|xml)$/
     if (regex.test(query?.url)) {
