@@ -1,26 +1,41 @@
 import type { NextPage } from 'next'
-import styles from '../../styles/Home.module.css'
+import { Dispatch, SetStateAction, createContext, useState } from 'react'
+import SSR from './SSR'
 
-const Home: NextPage = ({ data, status, env }: any) => {
-  console.log({env})
+export const Context = createContext({
+  lang: 'en',
+  setLang: (() => {}) as Dispatch<SetStateAction<string>>,
+})
+
+const Home: NextPage = (props: any) => {
+  const [lang, setLang] = useState('en')
 
   return (
-    <main className={styles.main}>
-      <div>{status}</div>
-      <div>{JSON.stringify(data)}</div>
-      <div>{env.AWS_EXECUTION_ENV}</div>
-    </main>
+    <Context.Provider value={{ lang, setLang }}>
+      <div>lang: {lang}</div>
+      <SSR {...props} />
+    </Context.Provider>
   )
 }
 
 // This gets called on every request
-export async function getServerSideProps() {
+export async function getServerSideProps(context: any) {
+  const baseUrl = `${
+    process.env.NODE_ENV === 'production' ? 'https' : 'http'
+  }://${context.req.headers.host}`
+
   // Fetch data from external API
-  const res = await fetch(`{{DISTRIBUTION_URL}}/api/hello`)
+  const res = await fetch(baseUrl + '/api/hello')
   const data = await res.json()
 
   // Pass data to the page via props
-  return { props: { data, status: res.status, env: process.env } }
+  return {
+    props: {
+      data,
+      status: res.status,
+      env: process.env.AWS_EXECUTION_ENV ?? null,
+    },
+  }
 }
 
 export default Home
