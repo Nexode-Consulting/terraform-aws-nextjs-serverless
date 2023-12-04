@@ -2,7 +2,7 @@ import type { NextPage } from 'next'
 import { Dispatch, SetStateAction, createContext, useState } from 'react'
 import SSR from './SSR'
 
-const Context = createContext({
+export const Context = createContext({
   lang: 'en',
   setLang: (() => {}) as Dispatch<SetStateAction<string>>,
 })
@@ -12,6 +12,7 @@ const Home: NextPage = (props: any) => {
 
   return (
     <Context.Provider value={{ lang, setLang }}>
+      <div>lang: {lang}</div>
       <SSR {...props} />
     </Context.Provider>
   )
