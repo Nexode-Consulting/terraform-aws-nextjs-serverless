@@ -1,12 +1,15 @@
 #!/bin/bash
 
 
-# List of packages to copy directly on the lambda, instead of the layer
+# List of packages to copy directly on the lambda or ALL packages, instead of the layer
+copyAllPackages=false
 for ARGUMENT in "$@"
 do
   KEY=$(echo $ARGUMENT | cut -f1 -d=)
 
-  if [[ $KEY == --packages-to-copy* ]]; then
+  if [[ $KEY == --copyAllPackages ]]; then
+    copyAllPackages=true
+  elif [[ $KEY == --packages-to-copy* ]]; then
     KEY_LENGTH=${#KEY}
     VALUE="${ARGUMENT:$KEY_LENGTH+1}"
 
@@ -20,7 +23,7 @@ rm -r standalone
 rm -r deployments
 
 # Install necessary packages
-npm i -D serverless@3.38.0 serverless-esbuild@1.49.0 esbuild@0.19.7 serverless-http@3.2.0 nextjs-image-optimization@0.2.18 image-redirection@0.2.18
+npm i -D serverless@3.38.0 serverless-esbuild@1.49.0 esbuild@0.19.7 serverless-http@3.2.0 nextjs-image-optimization@0.2.19 image-redirection@0.2.19
 
 # Inject code in build, and cleanup
 cp -a ./app ./app-backup
@@ -68,6 +71,7 @@ cp -a .next/static static/_next
 
 # Prepare source code
 rm -r node_modules
+
 # update code to support public assets prefix
 find . -name '*.html' -exec sed -i.backup 's|src="/|src="/assets/|g' '{}' \;
 find . -name '*.html' -exec sed -i.backup 's|src="/assets/_next/|src="/_next/|g' '{}' \;
@@ -90,12 +94,18 @@ find . -name '*.js' -exec sed -i.backup 's|src:"/assets/_next/|src:"/_next/|g' '
 find . -name '*.js' -exec sed -i.backup 's|image?url=%2Fassets%2F|image?url=%2F|g' '{}' \;
 find . -name '*.js' -exec sed -i.backup 's|url(/|url(/assets/|g' '{}' \;
 find . -type f -name '*.backup' -exec rm {} +
+
 # optinal: add node_modules
-mkdir node_modules
-for package in "${packages_to_copy[@]}"
-do
-  cp -a ../node_modules/$package node_modules/$package
-done
+if [[ $copyAllPackages == true ]]; then
+  cp -a ../.next/standalone/node_modules node_modules
+else
+  mkdir node_modules
+  for package in "${packages_to_copy[@]}"
+  do
+    cp -a ../node_modules/$package node_modules/$package
+  done
+fi
+
 # zip source code
 zip -r ../deployments/source.zip * .[!.]*
 cd ..
