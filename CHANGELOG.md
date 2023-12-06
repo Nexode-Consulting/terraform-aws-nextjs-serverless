@@ -5,6 +5,11 @@ All notable changes to this project will be documented in this file.
 <!-- ## [Unreleased] -->
 
 
+## [v0.2.19] - 2023-12-06
+
+* Option to copy all packages directly into the next_lambda [#46](https://github.com/Nexode-Consulting/terraform-aws-nextjs-serverless/pull/46)
+
+
 ## [v0.2.18] - 2023-12-04
 
 * Support remote images [#44](https://github.com/Nexode-Consulting/terraform-aws-nextjs-serverless/pull/44)
