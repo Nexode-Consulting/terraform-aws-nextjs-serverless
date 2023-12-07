@@ -105,6 +105,18 @@ variable "image_optimization_ephemeral_storage_size" {
   default     = 512
 }
 
+variable "lambda_forwarder_runtime" {
+  description = "The runtime for the forwarder lambda (nodejs16.x or nodejs18.x)"
+  type        = string
+  default     = "python3.10"
+}
+
+variable "lambda_forwarder_logs_retention" {
+  description = "The number of days that cloudwatch logs of forwarder lambda should be retained (Possible values are: 1, 3, 5, 7, 14, 30, 60, 90, 120, 150, 180, 365, 400, 545, 731, 1827, and 3653)"
+  type        = number
+  default     = 30
+}
+
 variable "cloudfront_cache_default_ttl" {
   description = "Default TTL in seconds for ordered cache behaviors"
   type        = number
