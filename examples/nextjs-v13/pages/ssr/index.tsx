@@ -19,10 +19,8 @@ const Home: NextPage = (props: any) => {
 }
 
 // This gets called on every request
-export async function getServerSideProps(context: any) {
-  const baseUrl = `${
-    process.env.NODE_ENV === 'production' ? 'https' : 'http'
-  }://${context.req.headers.host}`
+export async function getServerSideProps() {
+  const baseUrl = `{{DISTRIBUTION_URL}}`
 
   // Fetch data from external API
   const res = await fetch(baseUrl + '/api/hello')

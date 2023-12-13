@@ -5,6 +5,11 @@ All notable changes to this project will be documented in this file.
 <!-- ## [Unreleased] -->
 
 
+## [v0.2.20] - 2023-12-13
+
+* Fix broken SPA feature [#47](https://github.com/Nexode-Consulting/terraform-aws-nextjs-serverless/pull/47)
+
+
 ## [v0.2.19] - 2023-12-06
 
 * Option to copy all packages directly into the next_lambda [#46](https://github.com/Nexode-Consulting/terraform-aws-nextjs-serverless/pull/46)
