@@ -1,0 +1,53 @@
+name: CI Workflow
+
+on:
+  push:
+    branches: [ features/add-ci-pipeline ]
+  pull_request:
+    branches: [ features/add-ci-pipeline ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '20' # Keep in sync with examples/nextjs-v13/package.json
+
+      - name: Install dependencies
+        run: npm install --prefix examples/nextjs-v13
+
+      - name: Build
+        run: npm run build-serverless-next --prefix examples/nextjs-v13
+
+      - name: Archive production artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: nextjs-artifacts6
+          path: /deployments
+
+  test:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Go
+        uses: actions/setup-go@v2
+        with:
+          go-version: '1.21' # Keep in sync with tests/go.mod
+
+      - name: Install Terraform
+        uses: hashicorp/setup-terraform@v1
+
+      - name: Download artifacts
+        uses: actions/download-artifact@v2
+        with:
+          name: nextjs-artifacts
+          path: /examples/nextjs13/deployments
+
+      - name: Run Terratest
+        run: |
+          cd /path/to/your/terratest/directory # Update this path
+          go test -v ./...
