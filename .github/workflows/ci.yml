@@ -16,6 +16,8 @@ jobs:
         with:
           node-version: '20' # Keep in sync with examples/nextjs-v13/package.json
 
+      - name: Change d
+
       - name: Install dependencies
         run: npm install --prefix examples/nextjs-v13
 
@@ -26,7 +28,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: nextjs-artifacts
-          path: /examples/nextjs-v13/deployments
+          path: examples/nextjs-v13/deployments
 
   test:
     needs: build
