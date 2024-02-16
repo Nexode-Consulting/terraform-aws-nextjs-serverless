@@ -44,8 +44,13 @@ resource "aws_cloudfront_distribution" "next_distribution" {
     custom_origin_config {
       http_port              = "80"
       https_port             = "443"
-      origin_protocol_policy = "https-only"
+      origin_protocol_policy = "match-viewer"
       origin_ssl_protocols   = ["TLSv1.2"]
+    }
+
+    custom_header {
+      name  = "Server-Assets-Bucket-Domain"
+      value = var.server_asssets_bucket_domain
     }
   }
 
@@ -193,6 +198,11 @@ resource "aws_cloudfront_distribution" "next_distribution" {
     cached_methods   = ["GET", "HEAD"]
     target_origin_id = aws_cloudfront_origin_access_identity.dynamic_assets_oai.id
 
+    lambda_function_association {
+      event_type   = "origin-request"
+      lambda_arn   = var.lambda_forwarder_qualified_arn
+    }
+
     forwarded_values {
       query_string = true
 
@@ -200,6 +210,10 @@ resource "aws_cloudfront_distribution" "next_distribution" {
         forward = "all"
       }
     }
+
+    default_ttl = 0
+    max_ttl     = 2592000
+    min_ttl     = 0
 
     viewer_protocol_policy = "redirect-to-https"
     compress               = true

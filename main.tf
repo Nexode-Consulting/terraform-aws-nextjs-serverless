@@ -5,6 +5,13 @@ module "static-assets-hosting" {
   base_dir        = var.base_dir
 }
 
+module "server-assets-hosting" {
+  source = "./modules/server-assets-hosting"
+
+  deployment_name = var.deployment_name
+  base_dir        = var.base_dir
+}
+
 module "public-assets-hosting" {
   source = "./modules/public-assets-hosting"
 
@@ -27,6 +34,16 @@ module "server-side-rendering" {
   next_lambda_policy_statements = var.next_lambda_policy_statements
 
   api_gateway_log_format = var.api_gateway_log_format
+}
+
+module "lambda-forwarder" {
+  source = "./modules/lambda-forwarder"
+
+  deployment_name = var.deployment_name
+  base_dir        = var.base_dir
+
+  lambda_forwarder_runtime        = var.lambda_forwarder_runtime
+  lambda_forwarder_logs_retention = var.lambda_forwarder_logs_retention
 }
 
 module "image-optimization" {
@@ -53,10 +70,13 @@ module "distribution" {
   public_assets_bucket_region = var.region
   public_assets_origin_id     = module.public-assets-hosting.public_assets_oai
 
-  dynamic_origin_domain_name = module.server-side-rendering.api_gateway.default_apigatewayv2_stage_domain_name
+  server_asssets_bucket_domain = replace(module.server-assets-hosting.server_assets_bucket.s3_bucket_website_endpoint, "http://", "")
+  dynamic_origin_domain_name   = module.server-side-rendering.api_gateway.default_apigatewayv2_stage_domain_name
 
   image_optimization_qualified_arn = module.image-optimization.image_optimization.lambda_function_qualified_arn
   image_redirection_qualified_arn  = module.image-optimization.image_redirection.lambda_function_qualified_arn
+
+  lambda_forwarder_qualified_arn = module.lambda-forwarder.lambda_function_qualified_arn
 
   cloudfront_acm_certificate_arn = var.cloudfront_acm_certificate_arn
   cloudfront_aliases             = var.cloudfront_aliases
