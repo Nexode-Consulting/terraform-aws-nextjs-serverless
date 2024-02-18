@@ -1,6 +1,6 @@
 module github.com/Nexode-Consulting/terraform-aws-nextjs-serverless
 
-go 1.21.3
+go 1.21
 
 require (
 	github.com/gruntwork-io/terratest v0.46.1

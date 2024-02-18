@@ -106,6 +106,8 @@ resource "aws_cloudfront_distribution" "next_distribution" {
       cookies {
         forward = "all"
       }
+
+      headers = ["Accept"]
     }
 
     default_ttl = var.cloudfront_cache_default_ttl

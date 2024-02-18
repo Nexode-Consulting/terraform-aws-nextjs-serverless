@@ -27,6 +27,12 @@ func TestNextServerlessModuleExampleApp(t *testing.T) {
 	// Configure the Terraform options for the test.
 	terraformOptions := terraform.WithDefaultRetryableErrors(t, &terraform.Options{
 		TerraformDir: basePath + "/terraform/",
+		BackendConfig: map[string]interface{}{
+			"bucket": "terraform-aws-nextjs-serverless-tf-state",
+			"key":    "/ci/terraform.tfstate", // Replace with your state file path within the bucket
+			"region": "eu-central-1",          // Replace with the region your bucket is in
+			// Optionally, you can specify additional backend config here
+		},
 		RetryableTerraformErrors: map[string]string{
 			".*because it is a replicated function. Please see our documentation for Deleting Lambda@Edge Functions and Replicas.*": "Lambda was unable to delete Edge Function. It will attempt again to delete it soon.",
 		},
