@@ -1,0 +1,77 @@
+name: CI Workflow
+
+on:
+  push:
+    branches: [ features/add-ci-pipeline ]
+  pull_request:
+    branches: [ features/add-ci-pipeline ]
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm install --prefix examples/nextjs-v13
+
+      - name: Build
+        run: npm run build-serverless-next --prefix examples/nextjs-v13
+
+      - name: Archive production artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: nextjs-artifacts
+          path: |
+            examples/nextjs-v13/deployments
+            examples/nextjs-v13/standalone
+
+  test:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Go
+        uses: actions/setup-go@v2
+        with:
+          go-version: '1.21'
+      - name: configure aws credentials
+        uses: aws-actions/configure-aws-credentials@v3
+        with:
+          role-to-assume: arn:aws:iam::975050031787:role/TerraformAWSNextJSServerlessCIDeploymentRole
+          role-session-name: gitlab-ci-deployment
+          aws-region: eu-central-1
+      - name: Install Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: "1.5.7"
+
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: nextjs-artifacts
+          path: examples/nextjs-v13/
+
+      - name: Install go modules
+        run: go mod download
+        working-directory: tests
+
+      - name: Run Terratest
+        working-directory: tests
+        run: |
+          go test -timeout 30m
+
+      - name: Upload Terraform output
+        uses: actions/upload-artifact@v4
+        with:
+          name: terraform-output
+          path: terraform_output.json

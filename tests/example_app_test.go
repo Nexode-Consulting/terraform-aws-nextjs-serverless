@@ -9,9 +9,8 @@ import (
 	"testing"
 	"time"
 
-	_ "image/png"
-
 	http_helper "github.com/gruntwork-io/terratest/modules/http-helper"
+	"github.com/gruntwork-io/terratest/modules/logger"
 
 	"github.com/gruntwork-io/terratest/modules/terraform"
 	"github.com/stretchr/testify/assert"
@@ -27,12 +26,18 @@ func TestNextServerlessModuleExampleApp(t *testing.T) {
 	// Configure the Terraform options for the test.
 	terraformOptions := terraform.WithDefaultRetryableErrors(t, &terraform.Options{
 		TerraformDir: basePath + "/terraform/",
+		BackendConfig: map[string]interface{}{
+			"bucket": "terraform-aws-nextjs-serverless-tf-state",
+			"key":    "/ci/terraform.tfstate",
+			"region": "eu-central-1",
+		},
 		RetryableTerraformErrors: map[string]string{
 			".*because it is a replicated function. Please see our documentation for Deleting Lambda@Edge Functions and Replicas.*": "Lambda was unable to delete Edge Function. It will attempt again to delete it soon.",
 		},
 		MaxRetries:         5,
 		TimeBetweenRetries: 30 * time.Second,
 		NoColor:            false,
+		Logger:             logger.Discard,
 		PlanFilePath:       "./tf-plan",
 	})
 
