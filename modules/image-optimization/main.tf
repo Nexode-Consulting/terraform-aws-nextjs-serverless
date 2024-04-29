@@ -40,12 +40,6 @@ module "image_optimization" {
     allow_methods     = ["*"]
   }
 
-   lifecycle {
-      ignore_changes = [
-        last_modified,   # This field can trigger unnecessary updates
-      ]
-    }
-
   attach_policy_statements = true
   policy_statements = {
     s3_public_assets_bucket = {
