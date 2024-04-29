@@ -35,7 +35,7 @@ func TestNextServerlessModuleExampleApp(t *testing.T) {
 			".*because it is a replicated function. Please see our documentation for Deleting Lambda@Edge Functions and Replicas.*": "Lambda was unable to delete Edge Function. It will attempt again to delete it soon.",
 		},
 		MaxRetries:         5,
-		TimeBetweenRetries: 15 * time.Minute
+		TimeBetweenRetries: 15 * time.Minute,
 		NoColor:            false,
 		Logger:             logger.Discard,
 		PlanFilePath:       "./tf-plan",
