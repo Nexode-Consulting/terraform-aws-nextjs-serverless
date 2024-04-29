@@ -13,7 +13,7 @@ module "image_optimization" {
   }
 
   source  = "terraform-aws-modules/lambda/aws"
-  version = "6.5.0"
+  version = "7.2.6"
 
   function_name = "${var.deployment_name}-image-optimization"
   description   = "${var.deployment_name} Image Optimization"
@@ -39,6 +39,12 @@ module "image_optimization" {
     allow_origins     = ["*"]
     allow_methods     = ["*"]
   }
+
+   lifecycle {
+      ignore_changes = [
+        last_modified,   # This field can trigger unnecessary updates
+      ]
+    }
 
   attach_policy_statements = true
   policy_statements = {
