@@ -34,7 +34,7 @@ func TestNextServerlessModuleExampleApp(t *testing.T) {
 		RetryableTerraformErrors: map[string]string{
 			".*because it is a replicated function. Please see our documentation for Deleting Lambda@Edge Functions and Replicas.*": "Lambda was unable to delete Edge Function. It will attempt again to delete it soon.",
 		},
-		MaxRetries:         3,
+		MaxRetries:         4,
 		TimeBetweenRetries: 15 * time.Minute,
 		NoColor:            false,
 		Logger:             logger.Discard,
@@ -42,10 +42,10 @@ func TestNextServerlessModuleExampleApp(t *testing.T) {
 	}
 
 	// execute terraform commands
-	terraform.Init(t, terraformOptions)
-	terraform.Validate(t, terraformOptions)
-	terraform.Plan(t, terraformOptions)
-	terraform.Apply(t, terraformOptions)
+	terraform.Init(t, terraform.WithDefaultRetryableErrors(t, terraformOptions))
+	terraform.Validate(t, terraform.WithDefaultRetryableErrors(t, terraformOptions))
+	terraform.Plan(t, terraform.WithDefaultRetryableErrors(t, terraformOptions))
+	terraform.Apply(t, terraform.WithDefaultRetryableErrors(t, terraformOptions))
 	defer terraform.Destroy(t, terraformOptions)
 
 	// export the terraform output
