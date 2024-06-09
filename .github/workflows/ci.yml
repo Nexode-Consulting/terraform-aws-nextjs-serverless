@@ -68,7 +68,7 @@ jobs:
       - name: Run Terratest
         working-directory: tests
         run: |
-          go test -timeout 60m
+          go test -timeout 90m
 
       - name: Upload Terraform output
         uses: actions/upload-artifact@v4
