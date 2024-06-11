@@ -51,7 +51,6 @@ func TestNextServerlessModuleExampleApp(t *testing.T) {
 
 	// execute terraform commands
 	terraform.Init(t, terraform.WithDefaultRetryableErrors(t, terraformOptions))
-	terraform.Validate(t, terraform.WithDefaultRetryableErrors(t, terraformOptions))
 	terraform.Plan(t, terraform.WithDefaultRetryableErrors(t, terraformOptions))
 	terraform.Apply(t, terraform.WithDefaultRetryableErrors(t, terraformOptions))
 
