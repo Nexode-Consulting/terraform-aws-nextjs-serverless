@@ -2,8 +2,10 @@ package test
 
 import (
 	"encoding/json"
+	"fmt"
 	"image"
 	"io"
+	"math/rand"
 	"net/http"
 	"os"
 	"testing"
@@ -21,7 +23,10 @@ import (
 /**********************************************************/
 func TestNextServerlessModuleExampleApp(t *testing.T) {
 	// The base directory for locating the example files and directories in the Next.js v13 example app.
+
 	basePath := "../examples/nextjs-v13"
+
+	rand.Seed(time.Now().UnixNano())
 
 	// Configure the Terraform options for the test.
 	terraformOptions := &terraform.Options{
@@ -31,11 +36,14 @@ func TestNextServerlessModuleExampleApp(t *testing.T) {
 			"key":    "/ci/terraform.tfstate",
 			"region": "eu-central-1",
 		},
+		Vars: map[string]interface{}{
+			"deploymentName": fmt.Sprintf("%d-ci-run", rand.Int()),
+		},
 		RetryableTerraformErrors: map[string]string{
 			".*because it is a replicated function. Please see our documentation for Deleting Lambda@Edge Functions and Replicas.*": "Lambda was unable to delete Edge Function. It will attempt again to delete it soon.",
 		},
-		MaxRetries:         5,
-		TimeBetweenRetries: 15 * time.Minute,
+		MaxRetries:         3,
+		TimeBetweenRetries: 1 * time.Minute,
 		NoColor:            false,
 		Logger:             logger.Discard,
 		PlanFilePath:       "./tf-plan",
@@ -46,7 +54,6 @@ func TestNextServerlessModuleExampleApp(t *testing.T) {
 	terraform.Validate(t, terraform.WithDefaultRetryableErrors(t, terraformOptions))
 	terraform.Plan(t, terraform.WithDefaultRetryableErrors(t, terraformOptions))
 	terraform.Apply(t, terraform.WithDefaultRetryableErrors(t, terraformOptions))
-	defer terraform.Destroy(t, terraformOptions)
 
 	// export the terraform output
 	output := terraform.OutputJson(t, terraformOptions, "next_serverless")
