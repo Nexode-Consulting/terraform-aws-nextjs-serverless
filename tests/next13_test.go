@@ -37,7 +37,7 @@ func TestNextServerlessModuleExampleApp(t *testing.T) {
 			"region": "eu-central-1",
 		},
 		Vars: map[string]interface{}{
-			"deploymentName": fmt.Sprintf("%d-ci-run", rand.Int()),
+			"deployment_name": fmt.Sprintf("%d-ci-run", rand.Int()),
 		},
 		RetryableTerraformErrors: map[string]string{
 			".*because it is a replicated function. Please see our documentation for Deleting Lambda@Edge Functions and Replicas.*": "Lambda was unable to delete Edge Function. It will attempt again to delete it soon.",
