@@ -60,7 +60,7 @@ variable "next_lambda_memory_size" {
 variable "next_lambda_runtime" {
   description = "The runtime for the next lambda (nodejs16.x or nodejs18.x)"
   type        = string
-  default     = "nodejs20.x"
+  default     = "nodejs18.x"
 }
 
 variable "next_lambda_logs_retention" {
@@ -84,7 +84,7 @@ variable "api_gateway_log_format" {
 variable "image_optimization_runtime" {
   description = "The runtime for the image optimization Lambdas (nodejs16.x or nodejs18.x)"
   type        = string
-  default     = "nodejs20.x"
+  default     = "nodejs18.x"
 }
 
 variable "image_optimization_lambda_memory_size" {
