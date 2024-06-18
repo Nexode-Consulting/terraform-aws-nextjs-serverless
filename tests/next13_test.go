@@ -2,16 +2,17 @@ package test
 
 import (
 	"encoding/json"
+	"fmt"
 	"image"
 	"io"
+	"math/rand"
 	"net/http"
 	"os"
 	"testing"
 	"time"
 
-	_ "image/png"
-
 	http_helper "github.com/gruntwork-io/terratest/modules/http-helper"
+	"github.com/gruntwork-io/terratest/modules/logger"
 
 	"github.com/gruntwork-io/terratest/modules/terraform"
 	"github.com/stretchr/testify/assert"
@@ -22,26 +23,31 @@ import (
 /**********************************************************/
 func TestNextServerlessModuleExampleApp(t *testing.T) {
 	// The base directory for locating the example files and directories in the Next.js v13 example app.
+
 	basePath := "../examples/nextjs-v13"
 
+	rand.Seed(time.Now().UnixNano())
+
 	// Configure the Terraform options for the test.
-	terraformOptions := terraform.WithDefaultRetryableErrors(t, &terraform.Options{
+	terraformOptions := &terraform.Options{
 		TerraformDir: basePath + "/terraform/",
+		Vars: map[string]interface{}{
+			"deployment_name": fmt.Sprintf("%d-ci-run", rand.Int()),
+		},
 		RetryableTerraformErrors: map[string]string{
 			".*because it is a replicated function. Please see our documentation for Deleting Lambda@Edge Functions and Replicas.*": "Lambda was unable to delete Edge Function. It will attempt again to delete it soon.",
 		},
 		MaxRetries:         5,
 		TimeBetweenRetries: 30 * time.Second,
 		NoColor:            false,
+		Logger:             logger.Discard,
 		PlanFilePath:       "./tf-plan",
-	})
+	}
 
 	// execute terraform commands
-	terraform.Init(t, terraformOptions)
-	terraform.Validate(t, terraformOptions)
-	terraform.Plan(t, terraformOptions)
-	terraform.Apply(t, terraformOptions)
-	defer terraform.Destroy(t, terraformOptions)
+	terraform.Init(t, terraform.WithDefaultRetryableErrors(t, terraformOptions))
+	terraform.Plan(t, terraform.WithDefaultRetryableErrors(t, terraformOptions))
+	terraform.Apply(t, terraform.WithDefaultRetryableErrors(t, terraformOptions))
 
 	// export the terraform output
 	output := terraform.OutputJson(t, terraformOptions, "next_serverless")
