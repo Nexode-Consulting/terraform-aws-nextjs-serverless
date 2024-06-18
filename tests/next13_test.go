@@ -42,7 +42,7 @@ func TestNextServerlessModuleExampleApp(t *testing.T) {
 		NoColor:            false,
 		Logger:             logger.Discard,
 		PlanFilePath:       "./tf-plan",
-	})
+	}
 
 	// execute terraform commands
 	terraform.Init(t, terraform.WithDefaultRetryableErrors(t, terraformOptions))
