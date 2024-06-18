@@ -29,7 +29,7 @@ func TestNextServerlessModuleExampleApp(t *testing.T) {
 	rand.Seed(time.Now().UnixNano())
 
 	// Configure the Terraform options for the test.
-	terraformOptions := terraform.WithDefaultRetryableErrors(t, &terraform.Options{
+	terraformOptions := &terraform.Options{
 		TerraformDir: basePath + "/terraform/",
 		Vars: map[string]interface{}{
 			"deployment_name": fmt.Sprintf("%d-ci-run", rand.Int()),
@@ -45,10 +45,9 @@ func TestNextServerlessModuleExampleApp(t *testing.T) {
 	})
 
 	// execute terraform commands
-	terraform.Init(t, terraformOptions)
-	terraform.Validate(t, terraformOptions)
-	terraform.Plan(t, terraformOptions)
-	terraform.Apply(t, terraformOptions)
+	terraform.Init(t, terraform.WithDefaultRetryableErrors(t, terraformOptions))
+	terraform.Plan(t, terraform.WithDefaultRetryableErrors(t, terraformOptions))
+	terraform.Apply(t, terraform.WithDefaultRetryableErrors(t, terraformOptions))
 
 	// export the terraform output
 	output := terraform.OutputJson(t, terraformOptions, "next_serverless")
