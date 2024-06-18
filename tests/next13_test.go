@@ -31,11 +31,6 @@ func TestNextServerlessModuleExampleApp(t *testing.T) {
 	// Configure the Terraform options for the test.
 	terraformOptions := &terraform.Options{
 		TerraformDir: basePath + "/terraform/",
-		BackendConfig: map[string]interface{}{
-			"bucket": "terraform-aws-nextjs-serverless-tf-state",
-			"key":    "/ci/terraform.tfstate",
-			"region": "eu-central-1",
-		},
 		Vars: map[string]interface{}{
 			"deployment_name": fmt.Sprintf("%d-ci-run", rand.Int()),
 		},

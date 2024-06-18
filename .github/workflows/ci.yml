@@ -49,11 +49,11 @@ jobs:
         with:
           role-to-assume: arn:aws:iam::975050031787:role/TerraformAWSNextJSServerlessCIDeploymentRole
           role-session-name: gitlab-ci-deployment
-          aws-region: us-east-1
+          aws-region: eu-central-1
       - name: Install Terraform
         uses: hashicorp/setup-terraform@v3
         with:
-          terraform_version: "1.8.5"
+          terraform_version: "1.5.7"
 
       - name: Download artifacts
         uses: actions/download-artifact@v4
